@@ -32,7 +32,7 @@
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: #333333; border-radius: 4px; }
         
-        /* Fokus Android TV yang Stabil (Tanpa Scale agar tidak Glitch / Loncat) */
+        /* Fokus Android TV yang Stabil (Tanpa Scale agar tidak Glitch) */
         *:focus { outline: none !important; } 
         button:focus-visible, input:focus-visible, select:focus-visible, [tabindex="0"]:focus-visible {
             outline: 3px solid #ef5350 !important;
@@ -43,7 +43,7 @@
             border-color: #ef5350 !important;
         }
 
-        .station-card, .game-card { 
+        .station-card { 
             cursor: pointer; 
             background: rgba(30,30,30,0.7); 
             backdrop-filter: blur(5px); 
@@ -75,12 +75,6 @@
 
         .img-fallback { background: linear-gradient(135deg, #d32f2f, #8e0000); }
 
-        @keyframes popIn { 0% { transform: scale(0.3); opacity: 0; } 70% { transform: scale(1.15); } 100% { transform: scale(1); opacity: 1; } }
-        .mole-pop { animation: popIn 0.18s ease; }
-        @keyframes flipIn { from { transform: scale(0.6); } to { transform: scale(1); } }
-        .mem-flip { animation: flipIn 0.15s ease; }
-        .mole-hit { background-color: rgba(211, 47, 47, 0.4) !important; }
-
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         
@@ -101,7 +95,6 @@
         </div>
         <div class="flex items-center gap-4 relative z-10">
             <div id="digitalClock" class="text-sm font-mono font-bold text-gray-300 bg-black/50 px-3 py-1 rounded-full shadow-sm backdrop-blur"></div>
-            <!-- Tombol Zen Mode / Screensaver -->
             <button id="btnZen" tabindex="0" onclick="screensaver.show()" class="text-gray-400 hover:text-brand-400 transition flex items-center justify-center p-2 rounded-full" title="Zen Mode (Screensaver)">
                 <i class="fa-solid fa-tv text-lg"></i>
             </button>
@@ -114,7 +107,7 @@
                 <button onclick="app.switchTab('explore')" id="tab-explore" role="tab" tabindex="0" class="tab-btn px-2 py-2.5 rounded-lg text-xs md:text-sm font-bold bg-gray-900 shadow text-brand-400 transition truncate">Jelajah</button>
                 <button onclick="app.switchTab('favorites')" id="tab-favorites" role="tab" tabindex="0" class="tab-btn px-2 py-2.5 rounded-lg text-xs md:text-sm font-medium text-gray-300 transition truncate">Favorit <i class="fa-solid fa-heart text-red-500 text-xs hidden sm:inline ml-1"></i></button>
                 <button onclick="app.switchTab('custom')" id="tab-custom" role="tab" tabindex="0" class="tab-btn px-2 py-2.5 rounded-lg text-xs md:text-sm font-medium text-gray-300 transition truncate">Manual</button>
-                <button onclick="app.switchTab('games')" id="tab-games" role="tab" tabindex="0" class="tab-btn px-2 py-2.5 rounded-lg text-xs md:text-sm font-medium text-gray-300 transition truncate"><i class="fa-solid fa-gamepad text-xs hidden sm:inline mr-1"></i>Game</button>
+                <button onclick="app.switchTab('about')" id="tab-about" role="tab" tabindex="0" class="tab-btn px-2 py-2.5 rounded-lg text-xs md:text-sm font-medium text-gray-300 transition truncate"><i class="fa-solid fa-circle-info text-xs hidden sm:inline mr-1"></i>Tentang</button>
             </div>
 
             <div id="searchFilterBar" class="flex flex-col md:flex-row gap-3 w-full items-center bg-gray-900/60 backdrop-blur p-2 rounded-xl shadow-sm border border-gray-800">
@@ -156,26 +149,46 @@
             </div>
         </div>
 
-        <div id="gamesSection" class="hidden">
-            <div class="bg-gradient-to-r from-red-900 via-brand-600 to-red-800 rounded-2xl p-6 mb-5 text-white shadow-xl relative overflow-hidden border border-red-500/30">
-                <div class="absolute -right-16 -top-16 w-48 h-48 bg-red-500/40 rounded-full blur-2xl"></div>
-                <div class="absolute -left-10 -bottom-10 w-32 h-32 bg-orange-500/30 rounded-full blur-xl"></div>
-                <div class="flex items-center justify-between flex-wrap gap-4 relative z-10">
-                    <div>
-                        <h2 class="text-xl md:text-2xl font-black flex items-center gap-3 tracking-wide">
-                            <i class="fa-solid fa-gamepad text-yellow-400 drop-shadow-md"></i> AREA ARCADE
-                        </h2>
-                        <p class="text-sm text-red-100 mt-1 font-medium">Mainkan mini-game sambil mendengarkan siaran favorit Anda di TV!</p>
+        <div id="aboutSection" class="hidden">
+            <div class="bg-gray-900/90 backdrop-blur rounded-2xl p-6 md:p-8 border border-gray-800 shadow-xl text-white max-w-3xl mx-auto">
+                <div class="flex items-center gap-4 mb-6 pb-4 border-b border-gray-800">
+                    <div class="w-16 h-16 rounded-2xl bg-brand-600 flex items-center justify-center text-3xl shadow-lg flex-shrink-0">
+                        <i class="fa-solid fa-torii-gate"></i>
                     </div>
-                    <div class="text-right bg-black/30 backdrop-blur-md rounded-xl px-5 py-3 border border-white/10">
-                        <div class="text-[10px] uppercase tracking-widest text-red-200 font-bold mb-1">Total Skor Keseluruhan</div>
-                        <div id="gamesTotalScore" class="text-2xl font-black font-mono text-yellow-400 drop-shadow">0</div>
+                    <div>
+                        <h2 class="text-xl md:text-2xl font-black tracking-wide">IANVEX Radio TV Edition</h2>
+                        <p class="text-brand-400 font-semibold text-xs md:text-sm">Streaming Radio FM & Nusantara untuk Android TV</p>
                     </div>
                 </div>
-            </div>
+                <div class="space-y-4 text-gray-300 text-sm md:text-base leading-relaxed">
+                    <p><strong>IANVEX Radio TV Edition</strong> adalah aplikasi pemutar radio internet modern yang dirancang khusus untuk menghadirkan pengalaman mendengarkan siaran radio terbaik langsung dari layar besar ruang tamu Anda (Android TV / Google TV).</p>
+                    
+                    <div class="bg-black/50 p-4 rounded-xl border border-gray-800 my-4">
+                        <h4 class="font-bold text-white mb-1 flex items-center gap-2"><i class="fa-solid fa-user-gear text-brand-500"></i> Pembuat / Pengembang</h4>
+                        <p class="text-brand-400 font-bold text-lg md:text-xl">Ilman Nafi'an</p>
+                    </div>
 
-            <div id="gamesGrid" class="grid grid-cols-1 sm:grid-cols-3 gap-5"></div>
-            <div id="gamePlayArea" class="hidden mt-6"></div>
+                    <h3 class="font-bold text-white text-base md:text-lg mt-6 mb-3 flex items-center gap-2"><i class="fa-solid fa-star text-yellow-400"></i> Fitur & Keunggulan Aplikasi</h3>
+                    <ul class="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
+                        <li class="bg-gray-800/60 p-3.5 rounded-xl border border-gray-800 flex items-start gap-3">
+                            <i class="fa-solid fa-tv text-brand-400 mt-1"></i>
+                            <div><strong>Navigasi Remote D-Pad:</strong> Dioptimalkan penuh untuk Android TV tanpa kendala kursor.</div>
+                        </li>
+                        <li class="bg-gray-800/60 p-3.5 rounded-xl border border-gray-800 flex items-start gap-3">
+                            <i class="fa-solid fa-moon text-brand-400 mt-1"></i>
+                            <div><strong>Zen Mode (Screensaver):</strong> Layar hitam elegan dengan jam raksasa untuk mencegah <em>burn-in</em> OLED TV.</div>
+                        </li>
+                        <li class="bg-gray-800/60 p-3.5 rounded-xl border border-gray-800 flex items-start gap-3">
+                            <i class="fa-solid fa-location-dot text-brand-400 mt-1"></i>
+                            <div><strong>Filter Provinsi & Genre:</strong> Cari radio lokal di berbagai wilayah Indonesia dengan mudah.</div>
+                        </li>
+                        <li class="bg-gray-800/60 p-3.5 rounded-xl border border-gray-800 flex items-start gap-3">
+                            <i class="fa-solid fa-clock text-brand-400 mt-1"></i>
+                            <div><strong>Sleep Timer:</strong> Pengatur waktu otomatis untuk mematikan pemutaran saat Anda tertidur.</div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
         </div>
 
         <div id="customForm" class="hidden mb-8 bg-gray-900/80 backdrop-blur p-6 rounded-2xl border border-gray-800 shadow-lg">
@@ -228,7 +241,6 @@
                     <div class="vis-bar"></div><div class="vis-bar"></div><div class="vis-bar"></div>
                 </div>
 
-                <!-- Tombol Favorit di Player Bar (Dapat diakses dengan Remote TV) -->
                 <button id="btnFavPlayer" tabindex="0" onclick="app.toggleFavoriteCurrent()" class="p-3 text-gray-300 transition rounded-full relative flex items-center justify-center opacity-55 pointer-events-none" title="Tambah ke Favorit">
                     <i id="favIconPlayer" class="fa-regular fa-heart text-xl"></i>
                 </button>
@@ -264,8 +276,7 @@
         </div>
     </div>
 
-    <!-- Zen Mode / Screensaver Overlay -->
-    <div id="screensaverOverlay" class="hidden fixed inset-0 bg-black z-[100] flex-col items-center justify-center transition-opacity duration-1000 opacity-0 pointer-events-auto">
+    <div id="screensaverOverlay" class="hidden fixed inset-0 bg-black z-[100] flex-col items-center justify-center transition-opacity duration-300 opacity-0 pointer-events-auto">
         <canvas id="screensaverSakura" class="absolute inset-0 pointer-events-none opacity-40"></canvas>
         
         <div class="relative z-10 flex flex-col items-center text-center px-4">
@@ -314,7 +325,6 @@
             
             apiBase: '', 
 
-            // Fallback stations agar layar TV tidak pernah kosong jika API publik gagal/lambat
             fallbackStations: [
                 { id: 'fb_1', name: 'RRI Pro 3 Jakarta', url: 'https://stream.rri.co.id/streaming/13/pro3.mp3', image: '', tags: 'Jakarta, Berita', isCustom: false },
                 { id: 'fb_2', name: 'Prambors FM Jakarta', url: 'https://livestream.masima.co.id/pramborsjakarta', image: '', tags: 'Jakarta, Pop', isCustom: false },
@@ -332,7 +342,6 @@
                 this.fetchStations();
 
                 document.addEventListener('keydown', this.handleKeyboard.bind(this));
-                games.init();
                 sakura.init();
                 screensaver.init();
 
@@ -427,7 +436,6 @@
                     }
                     ui.renderStations();
                 } catch (err) {
-                    // Gunakan fallback jika fetch error / gagal
                     this.state.stations = this.fallbackStations;
                     ui.renderStations(); 
                 } finally {
@@ -523,17 +531,15 @@
             deleteCurrentCustom() {
                 if (!this.state.currentStation || !this.state.currentStation.isCustom) return;
                 const id = this.state.currentStation.id;
-                if(confirm('Hapus stream manual ini?')) {
-                    this.state.customs = this.state.customs.filter(c => c.id !== id);
-                    localStorage.setItem('ianvex_customs', JSON.stringify(this.state.customs));
-                    ui.renderStations();
-                    ui.showToast('Dihapus.');
-                    this.audio.pause();
-                    this.state.currentStation = null;
-                    document.getElementById('playerTitle').innerText = 'Belum ada radio diputar';
-                    document.getElementById('btnPlayPause').disabled = true;
-                    document.getElementById('btnDeletePlayer').classList.add('hidden');
-                }
+                this.state.customs = this.state.customs.filter(c => c.id !== id);
+                localStorage.setItem('ianvex_customs', JSON.stringify(this.state.customs));
+                ui.renderStations();
+                ui.showToast('Dihapus.');
+                this.audio.pause();
+                this.state.currentStation = null;
+                document.getElementById('playerTitle').innerText = 'Belum ada radio diputar';
+                document.getElementById('btnPlayPause').disabled = true;
+                document.getElementById('btnDeletePlayer').classList.add('hidden');
             },
 
             switchTab(tab) {
@@ -549,16 +555,15 @@
 
                 document.getElementById('customForm').classList.toggle('hidden', tab !== 'custom');
 
-                const isGames = tab === 'games';
-                document.getElementById('gamesSection').classList.toggle('hidden', !isGames);
-                document.getElementById('searchFilterBar').classList.toggle('hidden', isGames);
-                document.getElementById('stationsContainer').classList.toggle('hidden', isGames);
-                document.getElementById('emptyState').classList.toggle('hidden', isGames);
-                if (!isGames) document.getElementById('loadingIndicator').classList.add('hidden');
-                if (isGames) games.close();
+                const isAbout = tab === 'about';
+                document.getElementById('aboutSection').classList.toggle('hidden', !isAbout);
+                document.getElementById('searchFilterBar').classList.toggle('hidden', isAbout);
+                document.getElementById('stationsContainer').classList.toggle('hidden', isAbout);
+                document.getElementById('emptyState').classList.toggle('hidden', isAbout);
+                if (!isAbout) document.getElementById('loadingIndicator').classList.add('hidden');
 
                 if(tab === 'explore') this.fetchStations();
-                else if (tab !== 'games') ui.renderStations();
+                else if (!isAbout) ui.renderStations();
             },
 
             setSleepTimer(minutes) {
@@ -609,11 +614,6 @@
                 const isInput = ['INPUT', 'TEXTAREA', 'SELECT'].includes(activeTag);
 
                 if (e.key === 'Escape' || e.key === 'Backspace' || e.key === 'BrowserBack') {
-                    if (app.state.activeTab === 'games' && games.activeGame) {
-                        e.preventDefault();
-                        games.close(); 
-                        return;
-                    }
                     if (isInput) {
                         document.activeElement.blur(); 
                         return;
@@ -694,7 +694,7 @@
                     this.wakeLock.release().catch(() => {});
                     this.wakeLock = null;
                 }
-                setTimeout(() => overlay.classList.add('hidden'), 1000);
+                setTimeout(() => overlay.classList.add('hidden'), 300);
             }
         };
 
@@ -713,7 +713,7 @@
                     this.ssCanvas = ssCanvas;
                 }
 
-                for (let i = 0; i < 30; i++) this.petals.push(this.createPetal());
+                for (let i = 0; i < 20; i++) this.petals.push(this.createPetal());
                 this.animate();
             },
             resize() {
@@ -730,11 +730,11 @@
                     x: Math.random() * (this.canvas ? this.canvas.width : window.innerWidth),
                     y: Math.random() * (this.canvas ? this.canvas.height : window.innerHeight) - (this.canvas ? this.canvas.height : window.innerHeight),
                     size: Math.random() * 3 + 2,
-                    speedY: Math.random() * 1 + 0.5,
-                    speedX: Math.random() * 2 - 1,
+                    speedY: Math.random() * 0.8 + 0.3,
+                    speedX: Math.random() * 1.5 - 0.75,
                     angle: Math.random() * 360,
-                    spin: Math.random() * 0.1 - 0.05,
-                    color: `rgba(239, 83, 80, ${Math.random() * 0.5 + 0.2})` 
+                    spin: Math.random() * 0.05 - 0.025,
+                    color: `rgba(239, 83, 80, ${Math.random() * 0.4 + 0.2})` 
                 };
             },
             animate() {
@@ -744,7 +744,7 @@
 
                 this.petals.forEach(p => {
                     p.y += p.speedY;
-                    p.x += Math.sin(p.angle) * 1 + p.speedX; 
+                    p.x += Math.sin(p.angle) * 0.8 + p.speedX; 
                     p.angle += p.spin;
 
                     if (p.y > this.canvas.height) {
@@ -765,267 +765,6 @@
                     }
                 });
                 requestAnimationFrame(() => this.animate());
-            }
-        };
-
-        const games = {
-            activeGame: null, session: {}, bests: JSON.parse(localStorage.getItem('ianvex_game_bests')) || {},
-            total: parseInt(localStorage.getItem('ianvex_game_total') || '0', 10) || 0,
-            catalog: [
-                { id: 'mole',  name: 'Samurai Pukul',   icon: 'fa-solid fa-gavel',  desc: 'Pukul target yang muncul.',  color: 'from-amber-500 to-orange-700',   field: 'mole',  unit: 'poin' },
-                { id: 'reaction', name: 'Reaksi Ninja', icon: 'fa-solid fa-bolt', desc: 'Tekan OK saat layar berubah warna.',   color: 'from-red-600 to-red-800',       field: 'reaction', unit: 'ms', lowerBetter: true },
-                { id: 'memory', name: 'Ingat Mantra',  icon: 'fa-solid fa-scroll',   desc: 'Temukan pasangan simbol.',  color: 'from-purple-600 to-indigo-800', field: 'memory', unit: 'langkah', lowerBetter: true }
-            ],
-
-            init() { this.renderCards(); this.updateTotal(); },
-            save() { localStorage.setItem('ianvex_game_bests', JSON.stringify(this.bests)); localStorage.setItem('ianvex_game_total', String(this.total)); },
-            updateTotal() { const el = document.getElementById('gamesTotalScore'); if (el) el.textContent = this.total.toLocaleString('id-ID'); },
-
-            renderCards() {
-                const grid = document.getElementById('gamesGrid');
-                if (!grid) return;
-                grid.innerHTML = '';
-                this.catalog.forEach(g => {
-                    const best = g.lowerBetter ? (this.bests[g.field] ?? null) : (this.bests[g.field] || 0);
-                    const bestText = best === null ? '—' : best + ' ' + g.unit;
-                    
-                    const card = document.createElement('button'); 
-                    card.setAttribute('tabindex', '0');
-                    card.className = 'game-card w-full text-left bg-gray-900 rounded-2xl shadow p-5';
-                    card.innerHTML = `
-                        <div class="flex items-center gap-4">
-                            <div class="w-14 h-14 rounded-xl bg-gradient-to-br ${g.color} flex items-center justify-center text-white text-2xl shadow-md flex-shrink-0"><i class="${g.icon}"></i></div>
-                            <div class="min-w-0">
-                                <h4 class="font-bold text-base md:text-lg text-white">${g.name}</h4>
-                                <p class="text-xs text-brand-400 font-semibold mt-0.5">Rekor: <span>${bestText}</span></p>
-                            </div>
-                        </div>
-                        <p class="text-xs md:text-sm text-gray-400 mt-4 leading-relaxed">${g.desc}</p>
-                    `;
-                    card.addEventListener('click', () => this.start(g.id));
-                    grid.appendChild(card);
-                });
-            },
-
-            start(id) {
-                this.stopAll(); this.activeGame = id; this.session = {};
-                const area = document.getElementById('gamePlayArea');
-                area.classList.remove('hidden');
-                area.innerHTML = `<div class="bg-gray-900 rounded-2xl border border-gray-800 shadow-xl p-5 md:p-6"></div>`;
-                const panel = area.firstElementChild;
-                if (id === 'mole') this.startMole(panel);
-                else if (id === 'reaction') this.startReaction(panel);
-                else if (id === 'memory') this.startMemory(panel);
-            },
-
-            stopAll() {
-                const s = this.session || {};
-                if (s.timer) clearInterval(s.timer);
-                if (s.timeout) clearTimeout(s.timeout);
-                if (s.moleHide) clearTimeout(s.moleHide);
-                if (s.memTimer) clearTimeout(s.memTimer);
-                this.session = {};
-            },
-
-            panelHead(title, liveId, backLabel) {
-                return `
-                    <div class="flex items-center justify-between mb-6 pb-4 border-b border-gray-800 gap-2">
-                        <h3 class="font-black text-lg md:text-xl text-white truncate uppercase tracking-wide"><i class="fa-solid fa-gamepad text-brand-500 mr-2"></i>${title}</h3>
-                        <div class="flex items-center gap-4 text-sm">
-                            <span id="${liveId}" class="font-mono font-bold text-brand-400 whitespace-nowrap"></span>
-                            <button tabindex="0" onclick="games.close()" class="px-4 py-2 rounded-xl bg-gray-800 text-white font-bold shadow-sm whitespace-nowrap">
-                                <i class="fa-solid fa-xmark mr-1"></i> ${backLabel}
-                            </button>
-                        </div>
-                    </div>`;
-            },
-
-            close() { this.stopAll(); this.activeGame = null; document.getElementById('gamePlayArea').classList.add('hidden'); },
-
-            finish(id, value) {
-                const g = this.catalog.find(x => x.id === id);
-                if (!g) return;
-                this.total += value;
-                let isRecord = false;
-                if (g.lowerBetter) { if (this.bests[g.field] == null || value < this.bests[g.field]) { this.bests[g.field] = value; isRecord = true; } } 
-                else { if (value > (this.bests[g.field] || 0)) { this.bests[g.field] = value; isRecord = true; } }
-                this.save(); this.updateTotal(); this.renderCards();
-                ui.showToast(isRecord ? `Rekor Baru! ${value} ${g.unit} 🎉` : `Selesai: ${value} ${g.unit}`, isRecord ? 'success' : 'info');
-            },
-
-            startMole(panel) {
-                const DURATION = 30;
-                this.session = { score: 0, timeLeft: DURATION, activeIdx: -1 };
-                const s = this.session;
-
-                panel.innerHTML = this.panelHead('Samurai Pukul', 'moleLive', 'Tutup') + `
-                    <div class="flex items-center justify-between text-sm md:text-base font-bold mb-4 bg-black p-3 rounded-xl">
-                        <span class="text-gray-400">Waktu: <b id="moleTime" class="font-mono text-red-500 text-xl">${DURATION}</b>s</span>
-                        <span class="text-gray-400">Skor: <b id="moleScore" class="font-mono text-brand-400 text-xl">0</b></span>
-                    </div>
-                    <div id="moleGrid" class="grid grid-cols-3 gap-3 md:gap-4 max-w-sm mx-auto"></div>`;
-
-                const grid = panel.querySelector('#moleGrid');
-                for (let i = 0; i < 9; i++) {
-                    const hole = document.createElement('button'); 
-                    hole.setAttribute('tabindex', '0');
-                    hole.className = 'aspect-square rounded-2xl bg-gray-800 border-b-4 border-gray-900 flex items-center justify-center text-3xl md:text-4xl transition-all';
-                    hole.innerHTML = '<i class="fa-solid fa-circle text-gray-700 opacity-50"></i>';
-                    hole.addEventListener('click', () => this.hitMole(i));
-                    grid.appendChild(hole);
-                }
-
-                s.timer = setInterval(() => {
-                    s.timeLeft--;
-                    panel.querySelector('#moleTime').textContent = Math.max(0, s.timeLeft);
-                    if (s.timeLeft <= 0) { this.stopAll(); this.finish('mole', s.score); panel.querySelector('#moleLive').textContent = 'SELESAI'; return; }
-                    this.spawnMole();
-                }, 800);
-                this.spawnMole();
-            },
-
-            spawnMole() {
-                const s = this.session;
-                if (!s || s.timeLeft <= 0) return;
-                if (s.moleHide) clearTimeout(s.moleHide);
-                const holes = document.getElementById('moleGrid')?.children;
-                if (!holes) return;
-
-                if (s.activeIdx >= 0 && holes[s.activeIdx]) {
-                    holes[s.activeIdx].innerHTML = '<i class="fa-solid fa-circle text-gray-700 opacity-50"></i>';
-                    holes[s.activeIdx].classList.remove('mole-hit', 'bg-red-900/20');
-                }
-
-                let idx; do { idx = Math.floor(Math.random() * 9); } while (idx === s.activeIdx);
-                s.activeIdx = idx;
-                holes[idx].innerHTML = '<span class="mole-pop drop-shadow-md"><i class="fa-solid fa-ghost text-red-500"></i></span>';
-                holes[idx].classList.add('bg-red-900/20');
-
-                const speed = s.timeLeft > 15 ? 750 : 500;
-                s.moleHide = setTimeout(() => {
-                    if (this.session.activeIdx === idx && holes[idx]) {
-                        holes[idx].innerHTML = '<i class="fa-solid fa-circle text-gray-700 opacity-50"></i>';
-                        holes[idx].classList.remove('bg-red-900/20');
-                        this.session.activeIdx = -1;
-                    }
-                }, speed);
-            },
-
-            hitMole(i) {
-                const s = this.session;
-                if (s.timeLeft <= 0 || i !== s.activeIdx) return;
-                s.score++;
-                document.getElementById('moleScore').textContent = s.score;
-                const grid = document.getElementById('moleGrid');
-                if (grid && grid.children[i]) {
-                    grid.children[i].classList.add('mole-hit');
-                    grid.children[i].innerHTML = '<span class="mole-pop"><i class="fa-solid fa-burst text-yellow-500 text-4xl"></i></span>';
-                }
-                s.activeIdx = -1;
-                if (s.moleHide) clearTimeout(s.moleHide);
-                setTimeout(() => this.spawnMole(), 200);
-            },
-
-            startReaction(panel) {
-                this.session = { phase: 'idle', startAt: 0, timeout: null };
-                const s = this.session;
-
-                panel.innerHTML = this.panelHead('Reaksi Ninja', 'reactLive', 'Tutup') + `
-                    <div id="reactBox" tabindex="0" role="button" class="max-w-md mx-auto h-64 rounded-3xl flex flex-col items-center justify-center text-center p-6 cursor-pointer select-none bg-black border-4 border-gray-800 transition-colors shadow-inner">
-                        <i class="fa-solid fa-hand-pointer text-5xl text-gray-600 mb-4 animate-bounce"></i>
-                        <p class="font-black text-white text-lg md:text-xl uppercase tracking-widest">Tekan OK untuk Mulai</p>
-                        <p class="text-sm text-gray-400 mt-2 font-medium">Tunggu hingga layar berubah Merah Menyala</p>
-                    </div>`;
-
-                const box = panel.querySelector('#reactBox');
-                box.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.code === 'Space') { e.preventDefault(); box.click(); } });
-
-                box.addEventListener('click', () => {
-                    if (s.phase === 'idle') {
-                        s.phase = 'wait';
-                        box.className = 'max-w-md mx-auto h-64 rounded-3xl flex flex-col items-center justify-center text-center p-6 cursor-pointer select-none bg-gray-900 border-4 border-gray-800 transition-colors shadow-inner';
-                        box.innerHTML = '<i class="fa-solid fa-spinner fa-spin text-5xl text-white mb-4"></i><p class="font-black text-white text-xl uppercase tracking-widest">Bersiap...</p>';
-                        panel.querySelector('#reactLive').textContent = '';
-                        s.timeout = setTimeout(() => {
-                            s.phase = 'go';
-                            s.startAt = performance.now();
-                            box.className = 'max-w-md mx-auto h-64 rounded-3xl flex flex-col items-center justify-center text-center p-6 cursor-pointer select-none bg-brand-600 border-4 border-red-400 transition-colors shadow-[0_0_50px_rgba(211,47,47,0.6)]';
-                            box.innerHTML = '<i class="fa-solid fa-bolt text-7xl text-white mb-4"></i><p class="font-black text-white text-2xl md:text-3xl uppercase tracking-widest">TEKAN SEKARANG!</p>';
-                        }, 1500 + Math.random() * 3000);
-                    } else if (s.phase === 'wait') {
-                        clearTimeout(s.timeout);
-                        s.phase = 'idle';
-                        box.className = 'max-w-md mx-auto h-64 rounded-3xl flex flex-col items-center justify-center text-center p-6 cursor-pointer select-none bg-yellow-900/40 border-4 border-yellow-700 transition-colors';
-                        box.innerHTML = '<i class="fa-solid fa-triangle-exclamation text-5xl text-yellow-500 mb-4"></i><p class="font-black text-white text-xl uppercase tracking-widest">Terlalu Cepat!</p><p class="text-sm mt-2 text-gray-300">Tekan OK untuk mengulang</p>';
-                    } else if (s.phase === 'go') {
-                        const ms = Math.round(performance.now() - s.startAt);
-                        s.phase = 'idle';
-                        panel.querySelector('#reactLive').textContent = ms + ' ms';
-                        box.className = 'max-w-md mx-auto h-64 rounded-3xl flex flex-col items-center justify-center text-center p-6 cursor-pointer select-none bg-green-900/40 border-4 border-green-600 transition-colors shadow-lg';
-                        box.innerHTML = `<i class="fa-solid fa-stopwatch text-6xl text-green-400 mb-4"></i><p class="font-black text-white text-3xl font-mono">${ms} ms</p><p class="text-sm text-gray-300 mt-3 font-bold">Tekan OK untuk memperbaiki rekor</p>`;
-                        this.finish('reaction', ms);
-                    }
-                });
-                box.focus(); 
-            },
-
-            startMemory(panel) {
-                const icons = ['fa-music', 'fa-radio', 'fa-yin-yang', 'fa-torii-gate', 'fa-dragon', 'fa-mask', 'fa-fan', 'fa-fire'];
-                const deck = [...icons, ...icons].sort(() => Math.random() - 0.5);
-                this.session = { deck, open: [], matched: 0, moves: 0, lock: false };
-                const s = this.session;
-
-                panel.innerHTML = this.panelHead('Ingat Mantra', 'memLive', 'Tutup') + `
-                    <div class="flex items-center justify-between text-sm md:text-base font-bold mb-4 bg-black p-3 rounded-xl">
-                        <span class="text-gray-400">Langkah: <b id="memMoves" class="font-mono text-xl text-brand-400">0</b></span>
-                        <span class="text-gray-400">Pasangan: <b id="memPairs" class="text-green-500 font-mono text-xl">0/8</b></span>
-                    </div>
-                    <div id="memGrid" class="grid grid-cols-4 gap-3 max-w-sm mx-auto"></div>`;
-
-                const grid = panel.querySelector('#memGrid');
-                deck.forEach((icon, idx) => {
-                    const card = document.createElement('button');
-                    card.setAttribute('tabindex', '0');
-                    card.className = 'aspect-square rounded-xl bg-gray-800 border-b-4 border-gray-900 flex items-center justify-center text-3xl transition-all';
-                    card.innerHTML = '<i class="fa-solid fa-yin-yang text-gray-600 opacity-50"></i>';
-                    card.addEventListener('click', () => this.flipCard(idx, card, icon));
-                    grid.appendChild(card);
-                });
-            },
-
-            flipCard(idx, card, icon) {
-                const s = this.session;
-                s.matchedSet = s.matchedSet || new Set();
-                if (s.lock || s.matchedSet.has(idx) || s.open.some(o => o.idx === idx)) return;
-
-                card.innerHTML = `<span class="mem-flip drop-shadow-md"><i class="fa-solid ${icon} text-brand-400"></i></span>`;
-                card.classList.add('bg-gray-900', 'border-b-0', 'translate-y-1');
-                s.open.push({ idx, icon, card });
-
-                if (s.open.length === 2) {
-                    s.moves++; document.getElementById('memMoves').textContent = s.moves;
-                    const [a, b] = s.open;
-                    if (a.icon === b.icon) {
-                        s.matchedSet.add(a.idx); s.matchedSet.add(b.idx);
-                        setTimeout(() => {
-                            a.card.classList.add('mole-hit'); b.card.classList.add('mole-hit');
-                            a.card.innerHTML = '<i class="fa-solid fa-check text-green-500 drop-shadow"></i>';
-                            b.card.innerHTML = '<i class="fa-solid fa-check text-green-500 drop-shadow"></i>';
-                        }, 300);
-                        s.open = []; s.matched += 1;
-                        document.getElementById('memPairs').textContent = s.matched + '/8';
-                        if (s.matched === 8) { document.getElementById('memLive').textContent = 'SELESAI'; this.finish('memory', s.moves); }
-                    } else {
-                        s.lock = true;
-                        s.memTimer = setTimeout(() => {
-                            [a, b].forEach(x => {
-                                x.card.innerHTML = '<i class="fa-solid fa-yin-yang text-gray-600 opacity-50"></i>';
-                                x.card.classList.remove('bg-gray-900', 'border-b-0', 'translate-y-1');
-                            });
-                            s.open = []; s.lock = false;
-                        }, 700);
-                    }
-                }
             }
         };
 
