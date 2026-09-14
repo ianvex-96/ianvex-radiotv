@@ -1,4 +1,4 @@
-
+```html
 <!DOCTYPE html>
 <html lang="id" class="dark">
 <head>
@@ -26,8 +26,9 @@
     </script>
     
     <style>
-        html { scroll-padding-bottom: 120px; scroll-behavior: smooth; }
-        body { font-family: 'Inter', sans-serif; transition: background-color 0.3s, color 0.3s; background-color: #f9fafb; }
+        /* Optimasi Scroll TV */
+        html { scroll-padding-bottom: 120px; scroll-behavior: smooth; overscroll-behavior: none; }
+        body { font-family: 'Inter', sans-serif; transition: background-color 0.3s, color 0.3s; background-color: #f9fafb; overflow-x: hidden; }
         .dark body { background-color: #0a0a0a; color: #f3f4f6; }
         
         ::-webkit-scrollbar { width: 6px; height: 6px; }
@@ -35,28 +36,29 @@
         ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
         .dark ::-webkit-scrollbar-thumb { background: #333333; }
         
-        /* Navigasi Android TV: Visual Focus Ring */
+        /* NAVIGASI D-PAD TV SANGAT SOLID (Tanpa efek membesar) */
         *:focus { outline: none; } 
         button:focus-visible, input:focus-visible, select:focus-visible, [tabindex="0"]:focus-visible {
             outline: 4px solid #ef5350 !important;
-            outline-offset: 2px !important;
-            box-shadow: 0 0 20px rgba(239, 83, 80, 0.8) !important;
+            outline-offset: -4px !important; /* Masuk ke dalam agar tidak merusak grid layout TV */
+            box-shadow: inset 0 0 0 2px #fff, 0 0 25px rgba(239, 83, 80, 0.9) !important;
             z-index: 50; position: relative;
-            transform: scale(1.03);
-            transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s;
-            background-color: rgba(239, 83, 80, 0.1);
+            background-color: rgba(239, 83, 80, 0.15) !important;
+            border-color: #ef5350 !important;
         }
         .dark button:focus-visible, .dark input:focus-visible, .dark select:focus-visible, .dark [tabindex="0"]:focus-visible {
             outline-color: #ef5350 !important;
-            box-shadow: 0 0 20px rgba(239, 83, 80, 0.9) !important;
-            background-color: rgba(239, 83, 80, 0.2);
+            box-shadow: inset 0 0 0 2px #121212, 0 0 25px rgba(239, 83, 80, 1) !important;
         }
 
-        /* Card Hover effects (untuk mouse) */
-        .station-card, .game-card { transition: all 0.2s ease; cursor: pointer; background: rgba(255,255,255,0.8); backdrop-filter: blur(5px); }
-        .dark .station-card, .dark .game-card { background: rgba(30,30,30,0.6); }
-        .station-card:hover, .game-card:hover { transform: scale(1.03) translateY(-2px); border-color: #d32f2f; background-color: rgba(211, 47, 47, 0.05); }
-        .dark .station-card:hover, .dark .game-card:hover { box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.8); background-color: rgba(239, 83, 80, 0.15); }
+        /* Hilangkan hover animasi untuk TV agar navigasi stabil */
+        .station-card, .game-card { 
+            cursor: pointer; 
+            background: rgba(255,255,255,0.8); 
+            backdrop-filter: blur(5px); 
+            border: 2px solid transparent; /* Sediakan ruang border agar tidak geser saat difokus */
+        }
+        .dark .station-card, .dark .game-card { background: rgba(30,30,30,0.6); border-color: #2a2a2a; }
         
         .glass-panel { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(226, 232, 240, 0.6); }
         .dark .glass-panel { background: rgba(10, 10, 10, 0.85); border-bottom: 1px solid rgba(40, 40, 40, 0.6); border-top: 1px solid rgba(40, 40, 40, 0.6); }
@@ -98,7 +100,7 @@
         #sakuraCanvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 0; opacity: 0.6; }
     </style>
 </head>
-<body class="min-h-screen flex flex-col pb-32 relative overflow-x-hidden">
+<body class="min-h-screen flex flex-col pb-32 relative">
 
     <!-- Canvas Bunga Sakura di Latar Belakang -->
     <canvas id="sakuraCanvas"></canvas>
@@ -128,9 +130,9 @@
             <!-- Tabs Navigation -->
             <div class="grid grid-cols-4 bg-gray-200/80 dark:bg-gray-800/80 backdrop-blur p-1 rounded-xl w-full text-center shadow-inner" role="tablist">
                 <button onclick="app.switchTab('explore')" id="tab-explore" role="tab" tabindex="0" class="tab-btn px-2 py-2.5 rounded-lg text-xs md:text-sm font-bold bg-white dark:bg-gray-900 shadow text-brand-600 dark:text-brand-400 transition truncate">Jelajah</button>
-                <button onclick="app.switchTab('favorites')" id="tab-favorites" role="tab" tabindex="0" class="tab-btn px-2 py-2.5 rounded-lg text-xs md:text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition truncate">Favorit <i class="fa-solid fa-heart text-red-500 text-xs hidden sm:inline ml-1"></i></button>
-                <button onclick="app.switchTab('custom')" id="tab-custom" role="tab" tabindex="0" class="tab-btn px-2 py-2.5 rounded-lg text-xs md:text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition truncate">Manual</button>
-                <button onclick="app.switchTab('games')" id="tab-games" role="tab" tabindex="0" class="tab-btn px-2 py-2.5 rounded-lg text-xs md:text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition truncate"><i class="fa-solid fa-gamepad text-xs hidden sm:inline mr-1"></i>Game</button>
+                <button onclick="app.switchTab('favorites')" id="tab-favorites" role="tab" tabindex="0" class="tab-btn px-2 py-2.5 rounded-lg text-xs md:text-sm font-medium text-gray-600 dark:text-gray-300 transition truncate">Favorit <i class="fa-solid fa-heart text-red-500 text-xs hidden sm:inline ml-1"></i></button>
+                <button onclick="app.switchTab('custom')" id="tab-custom" role="tab" tabindex="0" class="tab-btn px-2 py-2.5 rounded-lg text-xs md:text-sm font-medium text-gray-600 dark:text-gray-300 transition truncate">Manual</button>
+                <button onclick="app.switchTab('games')" id="tab-games" role="tab" tabindex="0" class="tab-btn px-2 py-2.5 rounded-lg text-xs md:text-sm font-medium text-gray-600 dark:text-gray-300 transition truncate"><i class="fa-solid fa-gamepad text-xs hidden sm:inline mr-1"></i>Game</button>
             </div>
 
             <!-- Fitur Pencarian & Filter -->
@@ -167,9 +169,9 @@
                     </select>
 
                     <div class="flex bg-gray-200 dark:bg-gray-800 rounded-lg p-1 flex-shrink-0">
-                        <button onclick="ui.setViewMode('list')" tabindex="0" class="view-btn p-2 rounded-md text-gray-500 hover:text-gray-900 dark:hover:text-white transition" data-mode="list" title="Detail"><i class="fa-solid fa-list"></i></button>
+                        <button onclick="ui.setViewMode('list')" tabindex="0" class="view-btn p-2 rounded-md text-gray-500 transition" data-mode="list" title="Detail"><i class="fa-solid fa-list"></i></button>
                         <button onclick="ui.setViewMode('grid')" tabindex="0" class="view-btn p-2 rounded-md text-brand-600 dark:text-brand-400 bg-white dark:bg-gray-700 shadow-sm transition" data-mode="grid" title="Grid"><i class="fa-solid fa-border-all"></i></button>
-                        <button onclick="ui.setViewMode('dense')" tabindex="0" class="view-btn p-2 rounded-md text-gray-500 hover:text-gray-900 dark:hover:text-white transition" data-mode="dense" title="Grid Padat"><i class="fa-solid fa-table-cells"></i></button>
+                        <button onclick="ui.setViewMode('dense')" tabindex="0" class="view-btn p-2 rounded-md text-gray-500 transition" data-mode="dense" title="Grid Padat"><i class="fa-solid fa-table-cells"></i></button>
                     </div>
                 </div>
             </div>
@@ -209,7 +211,7 @@
                     <input type="url" id="customUrl" tabindex="0" placeholder="http://stream.url:port/mount" class="w-full px-4 py-3 rounded-xl border-0 bg-gray-100 dark:bg-gray-800 focus:ring-2 focus:ring-brand-500 font-medium">
                 </div>
             </div>
-            <button onclick="app.addCustomStation()" tabindex="0" class="mt-5 px-8 py-3 bg-brand-600 hover:bg-brand-500 focus-visible:bg-brand-500 text-white font-bold rounded-xl transition shadow-lg shadow-brand-500/30 flex items-center gap-2">
+            <button onclick="app.addCustomStation()" tabindex="0" class="mt-5 px-8 py-3 bg-brand-600 focus-visible:bg-brand-500 text-white font-bold rounded-xl transition shadow-lg shadow-brand-500/30 flex items-center gap-2">
                 <i class="fa-solid fa-save"></i> Simpan ke Manual
             </button>
         </div>
@@ -248,40 +250,39 @@
                     <div class="vis-bar"></div><div class="vis-bar"></div><div class="vis-bar"></div>
                 </div>
 
-                <!-- TOMBOL FAVORIT BARU DI PLAYER BAR (Aman dari D-Pad trap) -->
-                <button id="btnFavPlayer" onclick="app.toggleFavoriteCurrent()" tabindex="0" class="p-3 text-gray-600 hover:text-brand-500 dark:text-gray-300 dark:hover:text-brand-400 transition rounded-full focus-visible:bg-gray-200 dark:focus-visible:bg-gray-800 relative flex items-center justify-center opacity-50 pointer-events-none" title="Tambah ke Favorit">
+                <!-- TOMBOL FAVORIT DI PLAYER BAR -->
+                <button id="btnFavPlayer" onclick="app.toggleFavoriteCurrent()" tabindex="0" class="p-3 text-gray-600 dark:text-gray-300 transition rounded-full focus-visible:bg-gray-200 dark:focus-visible:bg-gray-800 relative flex items-center justify-center opacity-50 pointer-events-none" title="Tambah ke Favorit">
                     <i id="favIconPlayer" class="fa-regular fa-heart text-xl"></i>
                 </button>
                 
                 <!-- TOMBOL HAPUS (Khusus Radio Manual) -->
-                <button id="btnDeletePlayer" onclick="app.deleteCurrentCustom()" tabindex="0" class="p-3 text-gray-600 hover:text-red-500 dark:text-gray-300 dark:hover:text-red-500 transition rounded-full focus-visible:bg-gray-200 dark:focus-visible:bg-gray-800 relative hidden items-center justify-center" title="Hapus Radio">
+                <button id="btnDeletePlayer" onclick="app.deleteCurrentCustom()" tabindex="0" class="p-3 text-gray-600 dark:text-gray-300 transition rounded-full focus-visible:bg-gray-200 dark:focus-visible:bg-gray-800 relative hidden items-center justify-center" title="Hapus Radio">
                     <i class="fa-solid fa-trash text-xl"></i>
                 </button>
 
                 <div class="relative group">
-                    <button id="btnTimer" tabindex="0" class="p-3 text-gray-600 hover:text-brand-500 dark:text-gray-300 dark:hover:text-brand-400 transition rounded-full hover:bg-gray-200 dark:hover:bg-gray-800 group-focus-within:bg-gray-200 dark:group-focus-within:bg-gray-800 relative flex items-center justify-center" title="Sleep Timer">
+                    <button id="btnTimer" tabindex="0" class="p-3 text-gray-600 dark:text-gray-300 transition rounded-full group-focus-within:bg-gray-200 dark:group-focus-within:bg-gray-800 relative flex items-center justify-center" title="Sleep Timer">
                         <i class="fa-solid fa-moon text-xl"></i> 
                         <span id="timerBadge" class="text-[10px] font-black hidden absolute -top-1 -right-1 bg-brand-500 text-white rounded-full px-1.5 py-0.5 shadow-md border border-white dark:border-black"></span>
                     </button>
                     <!-- Dropdown Timer -->
                     <div class="absolute bottom-full right-0 mb-4 w-52 bg-white dark:bg-gray-900 rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-700 hidden group-hover:block group-focus-within:block overflow-hidden z-50 origin-bottom-right">
                         <div class="p-4 border-b border-gray-100 dark:border-gray-800 text-xs font-black text-center text-gray-500 dark:text-gray-400 uppercase tracking-widest bg-gray-50 dark:bg-black">Sleep Timer</div>
-                        <button tabindex="0" onclick="app.setSleepTimer(15)" class="block w-full text-left px-5 py-3.5 text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-800 transition focus-visible:bg-gray-200 dark:focus-visible:bg-gray-700">15 Menit</button>
-                        <button tabindex="0" onclick="app.setSleepTimer(30)" class="block w-full text-left px-5 py-3.5 text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-800 transition focus-visible:bg-gray-200 dark:focus-visible:bg-gray-700">30 Menit</button>
-                        <button tabindex="0" onclick="app.setSleepTimer(60)" class="block w-full text-left px-5 py-3.5 text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-800 transition focus-visible:bg-gray-200 dark:focus-visible:bg-gray-700">1 Jam</button>
-                        <button tabindex="0" onclick="app.setSleepTimer(0)" class="block w-full text-left px-5 py-3.5 text-sm text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 transition font-bold border-t border-gray-100 dark:border-gray-800 focus-visible:bg-red-100 dark:focus-visible:bg-red-900/40">Matikan Timer</button>
+                        <button tabindex="0" onclick="app.setSleepTimer(15)" class="block w-full text-left px-5 py-3.5 text-sm font-medium transition focus-visible:bg-gray-200 dark:focus-visible:bg-gray-700">15 Menit</button>
+                        <button tabindex="0" onclick="app.setSleepTimer(30)" class="block w-full text-left px-5 py-3.5 text-sm font-medium transition focus-visible:bg-gray-200 dark:focus-visible:bg-gray-700">30 Menit</button>
+                        <button tabindex="0" onclick="app.setSleepTimer(60)" class="block w-full text-left px-5 py-3.5 text-sm font-medium transition focus-visible:bg-gray-200 dark:focus-visible:bg-gray-700">1 Jam</button>
+                        <button tabindex="0" onclick="app.setSleepTimer(0)" class="block w-full text-left px-5 py-3.5 text-sm text-red-500 transition font-bold border-t border-gray-100 dark:border-gray-800 focus-visible:bg-red-100 dark:focus-visible:bg-red-900/40">Matikan Timer</button>
                     </div>
                 </div>
 
-                <button id="btnPlayPause" tabindex="0" class="w-14 h-14 md:w-16 md:h-16 flex flex-shrink-0 items-center justify-center bg-brand-600 hover:bg-brand-500 focus-visible:bg-brand-500 focus-visible:scale-110 text-white rounded-full shadow-[0_0_15px_rgba(211,47,47,0.5)] transition-all transform hover:scale-105" disabled>
+                <button id="btnPlayPause" tabindex="0" class="w-14 h-14 md:w-16 md:h-16 flex flex-shrink-0 items-center justify-center bg-brand-600 focus-visible:bg-brand-500 focus-visible:scale-110 text-white rounded-full shadow-[0_0_15px_rgba(211,47,47,0.5)] transition-all transform" disabled>
                     <i id="playIcon" class="fa-solid fa-play text-xl md:text-2xl ml-1"></i>
                 </button>
 
                 <div class="hidden md:flex items-center space-x-3 pl-4 border-l border-gray-300 dark:border-gray-700">
-                    <button tabindex="0" onclick="app.toggleMute()" class="focus:outline-none text-gray-500 hover:text-brand-500 dark:text-gray-400 transition focus-visible:text-brand-500 p-2">
+                    <button tabindex="0" onclick="app.toggleMute()" class="focus:outline-none text-gray-500 dark:text-gray-400 transition focus-visible:text-brand-500 p-2">
                         <i id="muteIconDesktop" class="fa-solid fa-volume-high text-lg"></i>
                     </button>
-                    <input type="range" id="volumeSlider" tabindex="-1" min="0" max="1" step="0.05" value="0.8" class="w-28 accent-brand-500 cursor-pointer focus-visible:outline-brand-500">
                 </div>
             </div>
         </div>
@@ -343,7 +344,6 @@
                 this.bindEvents();
                 ui.initTheme();
                 ui.setViewMode(this.state.viewMode, true);
-                this.audio.volume = document.getElementById('volumeSlider').value;
                 
                 await this.resolveApiServer();
                 this.fetchStations();
@@ -389,7 +389,6 @@
 
             bindEvents() {
                 document.getElementById('btnPlayPause').addEventListener('click', () => this.togglePlay());
-                document.getElementById('volumeSlider').addEventListener('input', (e) => { this.audio.volume = e.target.value; });
 
                 let searchTimeout;
                 const doSearch = () => {
@@ -486,9 +485,6 @@
                 const isMuted = this.audio.muted;
                 const iconDesktop = document.getElementById('muteIconDesktop');
                 if(iconDesktop) iconDesktop.className = isMuted ? 'fa-solid fa-volume-xmark text-lg text-red-500' : 'fa-solid fa-volume-high text-lg';
-                const slider = document.getElementById('volumeSlider');
-                if(isMuted) slider.classList.add('opacity-50');
-                else slider.classList.remove('opacity-50');
             },
 
             updateMediaSession(station) {
@@ -665,9 +661,13 @@
                     e.preventDefault(); this.togglePlay(); return;
                 }
                 
-                // Jika Space ditekan pada elemen yang bukan form/button (contoh di body)
-                if (e.code === 'Space') {
-                    if (['BUTTON', 'A'].includes(activeTag) || (document.activeElement.hasAttribute('role') && document.activeElement.getAttribute('role') === 'button')) return; 
+                // Jika Tombol Tengah ditekan pada card/button
+                if (e.key === 'Enter' || e.code === 'Space') {
+                    // Biarkan perilaku default browser menangani enter/space pada elemen terfokus (tabindex)
+                    if (document.activeElement && document.activeElement.hasAttribute('tabindex')) {
+                        return; 
+                    }
+                    // Jika tidak ada yang terfokus, pause/play
                     e.preventDefault();
                     this.togglePlay();
                 }
@@ -831,15 +831,15 @@
                     const bestText = best === null ? '—' : best + ' ' + g.unit;
                     
                     const card = document.createElement('button'); 
-                    card.className = 'game-card w-full text-left bg-white/90 dark:bg-gray-900/90 rounded-2xl border border-gray-200 dark:border-gray-800 shadow p-5 group focus-visible:border-brand-500';
+                    card.className = 'game-card w-full text-left bg-white/90 dark:bg-gray-900/90 rounded-2xl shadow p-5 focus-visible:border-brand-500';
                     card.innerHTML = `
                         <div class="flex items-center gap-4">
-                            <div class="w-14 h-14 rounded-xl bg-gradient-to-br ${g.color} flex items-center justify-center text-white text-2xl shadow-md flex-shrink-0 group-hover:scale-110 transition-transform"><i class="${g.icon}"></i></div>
+                            <div class="w-14 h-14 rounded-xl bg-gradient-to-br ${g.color} flex items-center justify-center text-white text-2xl shadow-md flex-shrink-0"><i class="${g.icon}"></i></div>
                             <div class="min-w-0">
                                 <h4 class="font-bold text-base md:text-lg text-gray-900 dark:text-white">${g.name}</h4>
                                 <p class="text-xs text-brand-600 dark:text-brand-400 font-semibold mt-0.5">Rekor: <span>${bestText}</span></p>
                             </div>
-                            <i class="fa-solid fa-chevron-right ml-auto text-gray-300 dark:text-gray-600 group-hover:text-brand-500 transition-colors"></i>
+                            <i class="fa-solid fa-chevron-right ml-auto text-gray-300 dark:text-gray-600"></i>
                         </div>
                         <p class="text-xs md:text-sm text-gray-500 dark:text-gray-400 mt-4 leading-relaxed">${g.desc}</p>
                     `;
@@ -875,7 +875,7 @@
                         <h3 class="font-black text-lg md:text-xl text-gray-900 dark:text-white truncate uppercase tracking-wide"><i class="fa-solid fa-gamepad text-brand-500 mr-2"></i>${title}</h3>
                         <div class="flex items-center gap-4 text-sm">
                             <span id="${liveId}" class="font-mono font-bold text-brand-600 whitespace-nowrap"></span>
-                            <button onclick="games.close()" class="px-4 py-2 rounded-xl bg-gray-200 dark:bg-gray-800 text-gray-800 dark:text-white font-bold hover:bg-gray-300 dark:hover:bg-gray-700 transition focus-visible:bg-brand-500 focus-visible:text-white shadow-sm whitespace-nowrap">
+                            <button onclick="games.close()" class="px-4 py-2 rounded-xl bg-gray-200 dark:bg-gray-800 text-gray-800 dark:text-white font-bold transition focus-visible:bg-brand-500 focus-visible:text-white shadow-sm whitespace-nowrap">
                                 <i class="fa-solid fa-xmark mr-1"></i> ${backLabel}
                             </button>
                         </div>
@@ -1026,7 +1026,7 @@
                 const grid = panel.querySelector('#memGrid');
                 deck.forEach((icon, idx) => {
                     const card = document.createElement('button');
-                    card.className = 'aspect-square rounded-xl bg-gray-200 dark:bg-gray-800 border-b-4 border-gray-300 dark:border-gray-900 flex items-center justify-center text-3xl transition-all hover:bg-gray-300 dark:hover:bg-gray-700 focus-visible:bg-brand-500/30';
+                    card.className = 'aspect-square rounded-xl bg-gray-200 dark:bg-gray-800 border-b-4 border-gray-300 dark:border-gray-900 flex items-center justify-center text-3xl transition-all focus-visible:bg-brand-500/30';
                     card.innerHTML = '<i class="fa-solid fa-yin-yang text-gray-400 dark:text-gray-600 opacity-50"></i>';
                     card.addEventListener('click', () => this.flipCard(idx, card, icon));
                     grid.appendChild(card);
@@ -1146,7 +1146,7 @@
                     card.setAttribute('role', 'button');
                     
                     if (mode === 'list') {
-                        card.className = `station-card flex items-center p-3 md:p-4 rounded-2xl border-2 ${isPlaying ? 'border-brand-500 shadow-md' : 'border-gray-200 dark:border-gray-800'}`;
+                        card.className = `station-card flex items-center p-3 md:p-4 rounded-2xl ${isPlaying ? 'border-brand-500 shadow-[0_0_15px_rgba(239,83,80,0.5)]' : ''}`;
                         card.innerHTML = `
                             <div class="w-14 h-14 md:w-16 md:h-16 rounded-xl flex-shrink-0 overflow-hidden bg-gray-100 flex items-center justify-center relative shadow-inner">
                                 ${station.image ? `<img src="${station.image}" class="w-full h-full object-cover" onerror="this.outerHTML='<div class=\\'w-full h-full img-fallback flex items-center justify-center text-white\\'><i class=\\'fa-solid fa-music text-xl\\'></i></div>'">` : `<div class='w-full h-full img-fallback flex items-center justify-center text-white'><i class='fa-solid fa-music text-xl'></i></div>`}
@@ -1156,32 +1156,23 @@
                                 <h3 class="font-bold text-gray-900 dark:text-white truncate text-base md:text-lg tracking-tight">${station.name}</h3>
                                 <p class="text-xs md:text-sm text-gray-500 dark:text-gray-400 truncate mt-1 font-medium capitalize"><i class="fa-solid fa-location-dot mr-1 opacity-50"></i>${station.tags || 'Nasional'}</p>
                             </div>
-                            <div class="ml-2 flex items-center gap-1 md:gap-2 flex-shrink-0">
-                                ${station.isCustom 
-                                    ? `<button tabindex="-1" onclick="app.deleteCustomStation(event, '${station.id}')" class="p-2.5 text-gray-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-full transition"><i class="fa-solid fa-trash"></i></button>`
-                                    : `<button tabindex="-1" onclick="app.toggleFavorite(event, '${strData}')" class="p-2.5 rounded-full fav-btn" data-id="${station.id}">
-                                        <i class="${isFav ? 'fa-solid' : 'fa-regular'} fa-heart ${isFav ? 'text-brand-500 drop-shadow-sm' : 'text-gray-400'} text-xl transition-all transform hover:scale-110"></i>
-                                       </button>`
-                                }
+                            <div class="ml-2 flex items-center flex-shrink-0">
+                                <i class="${isFav ? 'fa-solid' : 'fa-regular'} fa-heart ${isFav ? 'text-brand-500' : 'text-gray-400'} text-xl opacity-50"></i>
                             </div>
                         `;
                     } else {
                         const isDense = mode === 'dense';
                         const padClass = isDense ? 'p-2' : 'p-3 md:p-4';
-                        card.className = `station-card flex flex-col ${padClass} rounded-2xl border-2 ${isPlaying ? 'border-brand-500 shadow-[0_0_15px_rgba(211,47,47,0.3)]' : 'border-gray-200 dark:border-gray-800'}`;
+                        card.className = `station-card flex flex-col ${padClass} rounded-2xl ${isPlaying ? 'border-brand-500 shadow-[0_0_15px_rgba(239,83,80,0.5)]' : ''}`;
                         card.innerHTML = `
-                            <div class="w-full aspect-square rounded-xl overflow-hidden bg-gray-100 mb-3 relative group shadow-inner">
+                            <div class="w-full aspect-square rounded-xl overflow-hidden bg-gray-100 mb-3 relative shadow-inner">
                                 ${station.image ? `<img src="${station.image}" class="w-full h-full object-cover" onerror="this.outerHTML='<div class=\\'w-full h-full img-fallback flex items-center justify-center text-white\\'><i class=\\'fa-solid fa-music ${isDense ? 'text-2xl' : 'text-4xl'}\\'></i></div>'">` : `<div class='w-full h-full img-fallback flex items-center justify-center text-white'><i class='fa-solid fa-music ${isDense ? 'text-2xl' : 'text-4xl'}'></i></div>`}
-                                <div class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity backdrop-blur-[2px] ${isPlaying ? 'opacity-100 bg-black/60 backdrop-blur-sm' : ''}">
+                                <div class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 transition-opacity backdrop-blur-[2px] ${isPlaying ? 'opacity-100 bg-black/60 backdrop-blur-sm' : ''}">
                                     <i class="${isPlaying ? 'fa-solid fa-volume-high animate-pulse text-brand-400' : 'fa-solid fa-play text-white'} ${isDense ? 'text-2xl' : 'text-5xl'} drop-shadow-lg"></i>
                                 </div>
-                                ${!station.isCustom ? 
-                                `<button tabindex="-1" onclick="app.toggleFavorite(event, '${strData}')" class="absolute top-2 right-2 p-2 bg-white/90 dark:bg-black/70 backdrop-blur rounded-full fav-btn shadow-sm" data-id="${station.id}">
-                                    <i class="${isFav ? 'fa-solid' : 'fa-regular'} fa-heart ${isFav ? 'text-brand-500' : 'text-gray-500'} ${isDense ? 'text-[10px]' : 'text-sm'}"></i>
-                                </button>` : 
-                                `<button tabindex="-1" onclick="app.deleteCustomStation(event, '${station.id}')" class="absolute top-2 right-2 p-2 bg-white/90 dark:bg-black/70 backdrop-blur rounded-full shadow-sm text-gray-500 hover:text-red-500">
-                                    <i class="fa-solid fa-trash ${isDense ? 'text-[10px]' : 'text-sm'}"></i>
-                                </button>`}
+                                <div class="absolute top-2 right-2 p-1.5 rounded-full shadow-sm">
+                                    <i class="${isFav ? 'fa-solid' : 'fa-regular'} fa-heart ${isFav ? 'text-brand-500 drop-shadow-md' : 'text-gray-300'} ${isDense ? 'text-[10px]' : 'text-sm'}"></i>
+                                </div>
                             </div>
                             <div class="text-center mt-auto min-w-0 w-full">
                                 <h3 class="font-bold text-gray-900 dark:text-white truncate leading-tight tracking-tight ${isDense ? 'text-xs' : 'text-sm md:text-base'}">${station.name}</h3>
@@ -1191,22 +1182,12 @@
                     }
                     
                     card.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.code === 'Space') { if (e.target !== card) return; e.preventDefault(); app.playStation(strData); }});
-                    card.addEventListener('click', (e) => { if (e.target.closest('button')) return; app.playStation(strData); });
+                    card.addEventListener('click', (e) => { app.playStation(strData); });
                     container.appendChild(card);
                 });
             },
 
             updateFavoriteIcons() {
-                // Update grid icon (hanya dipanggil setelah list di render ulang via tab, tidak masalah)
-                document.querySelectorAll('.fav-btn').forEach(btn => {
-                    const id = btn.dataset.id;
-                    const isFav = app.state.favorites.some(f => f.id === id);
-                    const icon = btn.querySelector('i');
-                    if (isFav) icon.className = 'fa-solid fa-heart text-brand-500 ' + (app.state.viewMode==='list' ? 'text-xl' : 'text-sm');
-                    else icon.className = 'fa-regular fa-heart ' + (app.state.viewMode==='list' ? 'text-gray-400 text-xl' : 'text-gray-500 text-sm');
-                });
-
-                // Update Player Bar icon
                 const favIconPlayer = document.getElementById('favIconPlayer');
                 if (favIconPlayer && app.state.currentStation) {
                     const isFav = app.state.favorites.some(f => f.id === app.state.currentStation.id);
@@ -1306,3 +1287,4 @@
     </script>
 </body>
 </html>
+```
