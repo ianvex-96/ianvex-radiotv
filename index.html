@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="id" class="dark">
 <head>
@@ -25,7 +26,7 @@
     </script>
     
     <style>
-        html { scroll-padding-bottom: 90px; scroll-behavior: smooth; }
+        html { scroll-padding-bottom: 120px; scroll-behavior: smooth; }
         body { font-family: 'Inter', sans-serif; transition: background-color 0.3s, color 0.3s; background-color: #f9fafb; }
         .dark body { background-color: #0a0a0a; color: #f3f4f6; }
         
@@ -37,19 +38,21 @@
         /* Navigasi Android TV: Visual Focus Ring */
         *:focus { outline: none; } 
         button:focus-visible, input:focus-visible, select:focus-visible, [tabindex="0"]:focus-visible {
-            outline: 3px solid #d32f2f !important;
-            outline-offset: 3px !important;
-            box-shadow: 0 0 15px rgba(211, 47, 47, 0.7) !important;
-            z-index: 10; position: relative;
-            transform: scale(1.02);
-            transition: transform 0.2s, box-shadow 0.2s;
+            outline: 4px solid #ef5350 !important;
+            outline-offset: 2px !important;
+            box-shadow: 0 0 20px rgba(239, 83, 80, 0.8) !important;
+            z-index: 50; position: relative;
+            transform: scale(1.03);
+            transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s;
+            background-color: rgba(239, 83, 80, 0.1);
         }
         .dark button:focus-visible, .dark input:focus-visible, .dark select:focus-visible, .dark [tabindex="0"]:focus-visible {
             outline-color: #ef5350 !important;
-            box-shadow: 0 0 15px rgba(239, 83, 80, 0.8) !important;
+            box-shadow: 0 0 20px rgba(239, 83, 80, 0.9) !important;
+            background-color: rgba(239, 83, 80, 0.2);
         }
 
-        /* Card Hover/Focus effects */
+        /* Card Hover effects (untuk mouse) */
         .station-card, .game-card { transition: all 0.2s ease; cursor: pointer; background: rgba(255,255,255,0.8); backdrop-filter: blur(5px); }
         .dark .station-card, .dark .game-card { background: rgba(30,30,30,0.6); }
         .station-card:hover, .game-card:hover { transform: scale(1.03) translateY(-2px); border-color: #d32f2f; background-color: rgba(211, 47, 47, 0.05); }
@@ -95,7 +98,7 @@
         #sakuraCanvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 0; opacity: 0.6; }
     </style>
 </head>
-<body class="min-h-screen flex flex-col pb-24 relative overflow-x-hidden">
+<body class="min-h-screen flex flex-col pb-32 relative overflow-x-hidden">
 
     <!-- Canvas Bunga Sakura di Latar Belakang -->
     <canvas id="sakuraCanvas"></canvas>
@@ -105,7 +108,7 @@
             <div class="flex items-center gap-2 text-xl font-black text-brand-600 dark:text-brand-400">
                 <i class="fa-solid fa-torii-gate text-2xl"></i>
                 <span class="tracking-widest uppercase">IANVEX</span>
-                <span class="text-gray-500 dark:text-gray-400 font-light text-sm hidden md:inline ml-1 border-l border-gray-300 dark:border-gray-700 pl-2">RADIO TV</span>
+                <span class="text-gray-500 dark:text-gray-400 font-light text-sm hidden md:inline ml-1 border-l border-gray-300 dark:border-gray-700 pl-2">TV RADIO</span>
             </div>
         </div>
         <div class="flex items-center gap-4 relative z-10">
@@ -124,22 +127,22 @@
         <div class="flex flex-col gap-4 mb-6">
             <!-- Tabs Navigation -->
             <div class="grid grid-cols-4 bg-gray-200/80 dark:bg-gray-800/80 backdrop-blur p-1 rounded-xl w-full text-center shadow-inner" role="tablist">
-                <button onclick="app.switchTab('explore')" id="tab-explore" role="tab" class="tab-btn px-2 py-2.5 rounded-lg text-xs md:text-sm font-bold bg-white dark:bg-gray-900 shadow text-brand-600 dark:text-brand-400 transition truncate">Jelajah</button>
-                <button onclick="app.switchTab('favorites')" id="tab-favorites" role="tab" class="tab-btn px-2 py-2.5 rounded-lg text-xs md:text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition truncate">Favorit <i class="fa-solid fa-heart text-red-500 text-xs hidden sm:inline ml-1"></i></button>
-                <button onclick="app.switchTab('custom')" id="tab-custom" role="tab" class="tab-btn px-2 py-2.5 rounded-lg text-xs md:text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition truncate">Manual</button>
-                <button onclick="app.switchTab('games')" id="tab-games" role="tab" class="tab-btn px-2 py-2.5 rounded-lg text-xs md:text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition truncate"><i class="fa-solid fa-gamepad text-xs hidden sm:inline mr-1"></i>Game</button>
+                <button onclick="app.switchTab('explore')" id="tab-explore" role="tab" tabindex="0" class="tab-btn px-2 py-2.5 rounded-lg text-xs md:text-sm font-bold bg-white dark:bg-gray-900 shadow text-brand-600 dark:text-brand-400 transition truncate">Jelajah</button>
+                <button onclick="app.switchTab('favorites')" id="tab-favorites" role="tab" tabindex="0" class="tab-btn px-2 py-2.5 rounded-lg text-xs md:text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition truncate">Favorit <i class="fa-solid fa-heart text-red-500 text-xs hidden sm:inline ml-1"></i></button>
+                <button onclick="app.switchTab('custom')" id="tab-custom" role="tab" tabindex="0" class="tab-btn px-2 py-2.5 rounded-lg text-xs md:text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition truncate">Manual</button>
+                <button onclick="app.switchTab('games')" id="tab-games" role="tab" tabindex="0" class="tab-btn px-2 py-2.5 rounded-lg text-xs md:text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition truncate"><i class="fa-solid fa-gamepad text-xs hidden sm:inline mr-1"></i>Game</button>
             </div>
 
-            <!-- Fitur Pencarian & Filter (Ditambah Provinsi) -->
+            <!-- Fitur Pencarian & Filter -->
             <div id="searchFilterBar" class="flex flex-col md:flex-row gap-3 w-full items-center bg-white/60 dark:bg-gray-900/60 backdrop-blur p-2 rounded-xl shadow-sm border border-gray-200 dark:border-gray-800">
                 <div class="relative w-full md:flex-1">
                     <i class="fa-solid fa-search absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
-                    <input type="text" id="searchInput" placeholder="Cari nama radio..." class="w-full pl-10 pr-4 py-2.5 rounded-lg border-0 bg-gray-100 dark:bg-gray-800 focus:ring-2 focus:ring-brand-500 dark:text-white transition text-sm font-medium">
+                    <input type="text" id="searchInput" tabindex="0" placeholder="Cari nama radio..." class="w-full pl-10 pr-4 py-2.5 rounded-lg border-0 bg-gray-100 dark:bg-gray-800 focus:ring-2 focus:ring-brand-500 dark:text-white transition text-sm font-medium">
                 </div>
                 
-                <div class="flex gap-2 w-full md:w-auto overflow-x-auto no-scrollbar">
+                <div class="flex gap-2 w-full md:w-auto overflow-x-auto no-scrollbar pb-1 md:pb-0">
                     <!-- Filter Provinsi -->
-                    <select id="provinceFilter" class="flex-1 md:w-40 px-3 py-2.5 rounded-lg border-0 bg-gray-100 dark:bg-gray-800 focus:ring-2 focus:ring-brand-500 transition cursor-pointer text-sm font-medium min-w-[140px]">
+                    <select id="provinceFilter" tabindex="0" class="flex-1 md:w-40 px-3 py-2.5 rounded-lg border-0 bg-gray-100 dark:bg-gray-800 focus:ring-2 focus:ring-brand-500 transition cursor-pointer text-sm font-medium min-w-[140px]">
                         <option value="">Semua Wilayah</option>
                         <option value="Jawa Barat">Jawa Barat</option>
                         <option value="Jawa Tengah">Jawa Tengah</option>
@@ -154,7 +157,7 @@
                     </select>
 
                     <!-- Filter Kategori -->
-                    <select id="genreFilter" class="flex-1 md:w-36 px-3 py-2.5 rounded-lg border-0 bg-gray-100 dark:bg-gray-800 focus:ring-2 focus:ring-brand-500 transition cursor-pointer text-sm font-medium min-w-[130px]">
+                    <select id="genreFilter" tabindex="0" class="flex-1 md:w-36 px-3 py-2.5 rounded-lg border-0 bg-gray-100 dark:bg-gray-800 focus:ring-2 focus:ring-brand-500 transition cursor-pointer text-sm font-medium min-w-[130px]">
                         <option value="">Semua Genre</option>
                         <option value="pop">Pop</option>
                         <option value="dangdut">Dangdut</option>
@@ -164,9 +167,9 @@
                     </select>
 
                     <div class="flex bg-gray-200 dark:bg-gray-800 rounded-lg p-1 flex-shrink-0">
-                        <button onclick="ui.setViewMode('list')" class="view-btn p-2 rounded-md text-gray-500 hover:text-gray-900 dark:hover:text-white transition" data-mode="list" title="Detail"><i class="fa-solid fa-list"></i></button>
-                        <button onclick="ui.setViewMode('grid')" class="view-btn p-2 rounded-md text-brand-600 dark:text-brand-400 bg-white dark:bg-gray-700 shadow-sm transition" data-mode="grid" title="Grid"><i class="fa-solid fa-border-all"></i></button>
-                        <button onclick="ui.setViewMode('dense')" class="view-btn p-2 rounded-md text-gray-500 hover:text-gray-900 dark:hover:text-white transition" data-mode="dense" title="Grid Padat"><i class="fa-solid fa-table-cells"></i></button>
+                        <button onclick="ui.setViewMode('list')" tabindex="0" class="view-btn p-2 rounded-md text-gray-500 hover:text-gray-900 dark:hover:text-white transition" data-mode="list" title="Detail"><i class="fa-solid fa-list"></i></button>
+                        <button onclick="ui.setViewMode('grid')" tabindex="0" class="view-btn p-2 rounded-md text-brand-600 dark:text-brand-400 bg-white dark:bg-gray-700 shadow-sm transition" data-mode="grid" title="Grid"><i class="fa-solid fa-border-all"></i></button>
+                        <button onclick="ui.setViewMode('dense')" tabindex="0" class="view-btn p-2 rounded-md text-gray-500 hover:text-gray-900 dark:hover:text-white transition" data-mode="dense" title="Grid Padat"><i class="fa-solid fa-table-cells"></i></button>
                     </div>
                 </div>
             </div>
@@ -199,14 +202,14 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                 <div>
                     <label class="block text-sm font-semibold mb-2 text-gray-700 dark:text-gray-300">Nama Radio</label>
-                    <input type="text" id="customName" placeholder="Contoh: Radio Desa Kita" class="w-full px-4 py-3 rounded-xl border-0 bg-gray-100 dark:bg-gray-800 focus:ring-2 focus:ring-brand-500 font-medium">
+                    <input type="text" id="customName" tabindex="0" placeholder="Contoh: Radio Desa Kita" class="w-full px-4 py-3 rounded-xl border-0 bg-gray-100 dark:bg-gray-800 focus:ring-2 focus:ring-brand-500 font-medium">
                 </div>
                 <div>
                     <label class="block text-sm font-semibold mb-2 text-gray-700 dark:text-gray-300">URL Stream (Audio URL)</label>
-                    <input type="url" id="customUrl" placeholder="http://stream.url:port/mount" class="w-full px-4 py-3 rounded-xl border-0 bg-gray-100 dark:bg-gray-800 focus:ring-2 focus:ring-brand-500 font-medium">
+                    <input type="url" id="customUrl" tabindex="0" placeholder="http://stream.url:port/mount" class="w-full px-4 py-3 rounded-xl border-0 bg-gray-100 dark:bg-gray-800 focus:ring-2 focus:ring-brand-500 font-medium">
                 </div>
             </div>
-            <button onclick="app.addCustomStation()" class="mt-5 px-8 py-3 bg-brand-600 hover:bg-brand-500 focus-visible:bg-brand-500 text-white font-bold rounded-xl transition shadow-lg shadow-brand-500/30 flex items-center gap-2">
+            <button onclick="app.addCustomStation()" tabindex="0" class="mt-5 px-8 py-3 bg-brand-600 hover:bg-brand-500 focus-visible:bg-brand-500 text-white font-bold rounded-xl transition shadow-lg shadow-brand-500/30 flex items-center gap-2">
                 <i class="fa-solid fa-save"></i> Simpan ke Manual
             </button>
         </div>
@@ -238,48 +241,54 @@
                 </div>
             </div>
 
-            <div class="flex flex-row flex-nowrap items-center space-x-3 md:space-x-6 flex-shrink-0">
+            <div class="flex flex-row flex-nowrap items-center space-x-2 md:space-x-4 flex-shrink-0">
                 <!-- Visualizer Mini di Player Bar -->
                 <div id="playerVisualizer" class="visualizer-container hidden md:flex mr-2">
                     <div class="vis-bar"></div><div class="vis-bar"></div><div class="vis-bar"></div>
                     <div class="vis-bar"></div><div class="vis-bar"></div><div class="vis-bar"></div>
                 </div>
 
+                <!-- TOMBOL FAVORIT BARU DI PLAYER BAR (Aman dari D-Pad trap) -->
+                <button id="btnFavPlayer" onclick="app.toggleFavoriteCurrent()" tabindex="0" class="p-3 text-gray-600 hover:text-brand-500 dark:text-gray-300 dark:hover:text-brand-400 transition rounded-full focus-visible:bg-gray-200 dark:focus-visible:bg-gray-800 relative flex items-center justify-center opacity-50 pointer-events-none" title="Tambah ke Favorit">
+                    <i id="favIconPlayer" class="fa-regular fa-heart text-xl"></i>
+                </button>
+                
+                <!-- TOMBOL HAPUS (Khusus Radio Manual) -->
+                <button id="btnDeletePlayer" onclick="app.deleteCurrentCustom()" tabindex="0" class="p-3 text-gray-600 hover:text-red-500 dark:text-gray-300 dark:hover:text-red-500 transition rounded-full focus-visible:bg-gray-200 dark:focus-visible:bg-gray-800 relative hidden items-center justify-center" title="Hapus Radio">
+                    <i class="fa-solid fa-trash text-xl"></i>
+                </button>
+
                 <div class="relative group">
-                    <button id="btnTimer" class="p-3 text-gray-600 hover:text-brand-500 dark:text-gray-300 dark:hover:text-brand-400 transition rounded-full hover:bg-gray-200 dark:hover:bg-gray-800 group-focus-within:bg-gray-200 dark:group-focus-within:bg-gray-800 relative flex items-center justify-center" title="Sleep Timer">
-                        <i class="fa-solid fa-moon text-lg md:text-xl"></i> 
+                    <button id="btnTimer" tabindex="0" class="p-3 text-gray-600 hover:text-brand-500 dark:text-gray-300 dark:hover:text-brand-400 transition rounded-full hover:bg-gray-200 dark:hover:bg-gray-800 group-focus-within:bg-gray-200 dark:group-focus-within:bg-gray-800 relative flex items-center justify-center" title="Sleep Timer">
+                        <i class="fa-solid fa-moon text-xl"></i> 
                         <span id="timerBadge" class="text-[10px] font-black hidden absolute -top-1 -right-1 bg-brand-500 text-white rounded-full px-1.5 py-0.5 shadow-md border border-white dark:border-black"></span>
                     </button>
+                    <!-- Dropdown Timer -->
                     <div class="absolute bottom-full right-0 mb-4 w-52 bg-white dark:bg-gray-900 rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-700 hidden group-hover:block group-focus-within:block overflow-hidden z-50 origin-bottom-right">
                         <div class="p-4 border-b border-gray-100 dark:border-gray-800 text-xs font-black text-center text-gray-500 dark:text-gray-400 uppercase tracking-widest bg-gray-50 dark:bg-black">Sleep Timer</div>
-                        <button onclick="app.setSleepTimer(15)" class="block w-full text-left px-5 py-3.5 text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-800 transition focus-visible:bg-gray-200 dark:focus-visible:bg-gray-700">15 Menit</button>
-                        <button onclick="app.setSleepTimer(30)" class="block w-full text-left px-5 py-3.5 text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-800 transition focus-visible:bg-gray-200 dark:focus-visible:bg-gray-700">30 Menit</button>
-                        <button onclick="app.setSleepTimer(60)" class="block w-full text-left px-5 py-3.5 text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-800 transition focus-visible:bg-gray-200 dark:focus-visible:bg-gray-700">1 Jam</button>
-                        <button onclick="app.setSleepTimer(0)" class="block w-full text-left px-5 py-3.5 text-sm text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 transition font-bold border-t border-gray-100 dark:border-gray-800 focus-visible:bg-red-100 dark:focus-visible:bg-red-900/40">Matikan Timer</button>
+                        <button tabindex="0" onclick="app.setSleepTimer(15)" class="block w-full text-left px-5 py-3.5 text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-800 transition focus-visible:bg-gray-200 dark:focus-visible:bg-gray-700">15 Menit</button>
+                        <button tabindex="0" onclick="app.setSleepTimer(30)" class="block w-full text-left px-5 py-3.5 text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-800 transition focus-visible:bg-gray-200 dark:focus-visible:bg-gray-700">30 Menit</button>
+                        <button tabindex="0" onclick="app.setSleepTimer(60)" class="block w-full text-left px-5 py-3.5 text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-800 transition focus-visible:bg-gray-200 dark:focus-visible:bg-gray-700">1 Jam</button>
+                        <button tabindex="0" onclick="app.setSleepTimer(0)" class="block w-full text-left px-5 py-3.5 text-sm text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 transition font-bold border-t border-gray-100 dark:border-gray-800 focus-visible:bg-red-100 dark:focus-visible:bg-red-900/40">Matikan Timer</button>
                     </div>
                 </div>
 
-                <button id="btnPlayPause" class="w-14 h-14 md:w-16 md:h-16 flex flex-shrink-0 items-center justify-center bg-brand-600 hover:bg-brand-500 focus-visible:bg-brand-500 focus-visible:scale-110 text-white rounded-full shadow-[0_0_15px_rgba(211,47,47,0.5)] transition-all transform hover:scale-105" disabled>
+                <button id="btnPlayPause" tabindex="0" class="w-14 h-14 md:w-16 md:h-16 flex flex-shrink-0 items-center justify-center bg-brand-600 hover:bg-brand-500 focus-visible:bg-brand-500 focus-visible:scale-110 text-white rounded-full shadow-[0_0_15px_rgba(211,47,47,0.5)] transition-all transform hover:scale-105" disabled>
                     <i id="playIcon" class="fa-solid fa-play text-xl md:text-2xl ml-1"></i>
                 </button>
 
-                <!-- Shortcut Screensaver untuk Mobile -->
-                <button onclick="screensaver.show()" class="md:hidden w-10 h-10 flex items-center justify-center text-gray-500 hover:text-brand-500 dark:text-gray-400 transition" title="Zen Mode">
-                    <i class="fa-solid fa-tv text-lg"></i>
-                </button>
-
                 <div class="hidden md:flex items-center space-x-3 pl-4 border-l border-gray-300 dark:border-gray-700">
-                    <button onclick="app.toggleMute()" class="focus:outline-none text-gray-500 hover:text-brand-500 dark:text-gray-400 transition focus-visible:text-brand-500 p-2">
+                    <button tabindex="0" onclick="app.toggleMute()" class="focus:outline-none text-gray-500 hover:text-brand-500 dark:text-gray-400 transition focus-visible:text-brand-500 p-2">
                         <i id="muteIconDesktop" class="fa-solid fa-volume-high text-lg"></i>
                     </button>
-                    <input type="range" id="volumeSlider" min="0" max="1" step="0.05" value="0.8" class="w-28 accent-brand-500 cursor-pointer focus-visible:outline-brand-500">
+                    <input type="range" id="volumeSlider" tabindex="-1" min="0" max="1" step="0.05" value="0.8" class="w-28 accent-brand-500 cursor-pointer focus-visible:outline-brand-500">
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- Zen Mode / Screensaver Overlay -->
     <div id="screensaverOverlay" class="hidden fixed inset-0 bg-black z-[100] flex-col items-center justify-center cursor-none transition-opacity duration-1000 opacity-0">
-        <!-- Screensaver Sakura (terpisah agar lebih jelas di hitam pekat) -->
         <canvas id="screensaverSakura" class="absolute inset-0 pointer-events-none opacity-40"></canvas>
         
         <div class="relative z-10 flex flex-col items-center text-center animate-pulse-slow px-4">
@@ -308,7 +317,8 @@
         </div>
     </div>
 
-    <div id="toastContainer" class="fixed bottom-28 left-1/2 transform -translate-x-1/2 z-50 flex flex-col gap-2 pointer-events-none"></div>
+    <!-- Toast Notification -->
+    <div id="toastContainer" class="fixed bottom-32 left-1/2 transform -translate-x-1/2 z-[100] flex flex-col gap-2 pointer-events-none"></div>
 
     <script>
         const app = {
@@ -322,7 +332,7 @@
                 activeTab: 'explore', 
                 searchQuery: '',
                 activeGenre: '',
-                activeProvince: '', // NEW: Filter Provinsi
+                activeProvince: '', 
                 viewMode: localStorage.getItem('ianvex_view') || 'grid',
                 sleepTimerData: { active: false, endTime: null, interval: null, initialSeconds: 0 }
             },
@@ -347,6 +357,7 @@
                 // Auto-resume stasiun terakhir
                 this.loadLastStation();
 
+                // Fokus otomatis pada tab pertama saat dibuka (untuk TV)
                 setTimeout(() => {
                     const firstTab = document.getElementById('tab-explore');
                     if (firstTab) firstTab.focus();
@@ -361,9 +372,6 @@
                         this.state.currentStation = station;
                         this.audio.src = station.url;
                         ui.updatePlayerInfo(station);
-                        
-                        // Coba autoplay (mungkin diblokir browser, tapi informasi UI terupdate)
-                        this.audio.play().catch(e => console.log('Autoplay dicegah oleh browser, menunggu interaksi pengguna.'));
                     } catch(e) { console.error('Error parsing last station'); }
                 }
             },
@@ -400,7 +408,6 @@
                     doSearch();
                 });
 
-                // NEW: Event listener filter provinsi
                 document.getElementById('provinceFilter').addEventListener('change', (e) => {
                     this.state.activeProvince = e.target.value;
                     doSearch();
@@ -417,12 +424,11 @@
             async fetchStations() {
                 ui.showLoading(true);
                 try {
-                    // Query dasar untuk Indonesia
                     let url = `${this.apiBase}?countrycode=ID&limit=100&hidebroken=true&order=clickcount&reverse=true`;
                     
                     if (this.state.searchQuery) url += `&name=${encodeURIComponent(this.state.searchQuery)}`;
                     if (this.state.activeGenre) url += `&tagList=${encodeURIComponent(this.state.activeGenre)}`;
-                    if (this.state.activeProvince) url += `&state=${encodeURIComponent(this.state.activeProvince)}`; // API Radio Browser mendukung parameter 'state'
+                    if (this.state.activeProvince) url += `&state=${encodeURIComponent(this.state.activeProvince)}`; 
 
                     const res = await fetch(url);
                     if (!res.ok) throw new Error('API Error');
@@ -433,7 +439,7 @@
                         name: item.name.trim(),
                         url: item.url_resolved || item.url,
                         image: item.favicon || '',
-                        tags: item.tags || (item.state || 'General'), // Menampilkan provinsi jika tidak ada tags
+                        tags: item.tags || (item.state || 'Nasional'), 
                         isCustom: false
                     }));
                     ui.renderStations();
@@ -454,8 +460,6 @@
 
                 this.state.currentStation = station;
                 this.audio.src = station.url;
-                
-                // Simpan sejarah untuk resume
                 localStorage.setItem('ianvex_last_station', stationDataStr);
                 
                 ui.updatePlayerInfo(station);
@@ -465,7 +469,7 @@
                 if (playPromise !== undefined) {
                     playPromise.catch(error => {
                         ui.updatePlayerState(false);
-                        if (error.name === 'NotSupportedError') ui.showToast('Format aliran tidak didukung.', 'error');
+                        if (error.name === 'NotSupportedError') ui.showToast('Format aliran tidak didukung browser TV.', 'error');
                         else ui.showToast('Gagal terhubung. Menunggu aksi...', 'error');
                     });
                 }
@@ -492,7 +496,7 @@
                     navigator.mediaSession.metadata = new MediaMetadata({
                         title: station.name,
                         artist: station.tags || 'Internet Radio',
-                        album: 'IANVEX RADIO TV',
+                        album: 'IANVEX TV Radio',
                         artwork: [{ src: station.image || 'https://ui-avatars.com/api/?name=Radio&background=d32f2f&color=fff&size=512', sizes: '512x512', type: 'image/png' }]
                     });
                     navigator.mediaSession.setActionHandler('play', () => this.audio.play());
@@ -501,7 +505,7 @@
             },
 
             toggleFavorite(e, stationDataStr) {
-                e.stopPropagation(); 
+                if (e) e.stopPropagation(); 
                 const station = JSON.parse(decodeURIComponent(stationDataStr));
                 const index = this.state.favorites.findIndex(f => f.id === station.id);
                 
@@ -516,6 +520,13 @@
                 localStorage.setItem('ianvex_favs', JSON.stringify(this.state.favorites));
                 if (this.state.activeTab === 'favorites') ui.renderStations();
                 else ui.updateFavoriteIcons();
+            },
+
+            // Fungsi Favorit dipanggil dari Player Bar
+            toggleFavoriteCurrent() {
+                if (!this.state.currentStation || this.state.currentStation.isCustom) return;
+                const strData = encodeURIComponent(JSON.stringify(this.state.currentStation));
+                this.toggleFavorite(null, strData);
             },
 
             addCustomStation() {
@@ -537,15 +548,28 @@
             },
 
             deleteCustomStation(e, id) {
-                e.stopPropagation();
-                ui.showToast('Tekan OK sekali lagi untuk Hapus (Tahan 1 detik)', 'info'); // Proteksi TV remote agar tidak sengaja terpencet
-                // Untuk kesederhanaan versi web demo, gunakan confirm. Idealnya buat modal custom.
+                if (e) e.stopPropagation();
                 if(confirm('Hapus stream manual ini?')) {
                     this.state.customs = this.state.customs.filter(c => c.id !== id);
                     localStorage.setItem('ianvex_customs', JSON.stringify(this.state.customs));
                     ui.renderStations();
                     ui.showToast('Dihapus.');
+                    
+                    // Jika yang dihapus sedang diputar
+                    if (this.state.currentStation && this.state.currentStation.id === id) {
+                        this.audio.pause();
+                        this.state.currentStation = null;
+                        document.getElementById('playerTitle').innerText = 'Belum ada radio diputar';
+                        document.getElementById('btnPlayPause').disabled = true;
+                        document.getElementById('btnDeletePlayer').classList.add('hidden');
+                    }
                 }
+            },
+            
+            // Fungsi Hapus dipanggil dari Player Bar
+            deleteCurrentCustom() {
+                if (!this.state.currentStation || !this.state.currentStation.isCustom) return;
+                this.deleteCustomStation(null, this.state.currentStation.id);
             },
 
             switchTab(tab) {
@@ -640,20 +664,8 @@
                 if (e.key === 'MediaPlayPause' || e.key === 'MediaPlay' || e.key === 'MediaPause') {
                     e.preventDefault(); this.togglePlay(); return;
                 }
-                if (e.key === 'AudioVolumeUp') {
-                    let vol = this.audio.volume + 0.1;
-                    if(vol > 1) vol = 1;
-                    this.audio.volume = vol;
-                    document.getElementById('volumeSlider').value = vol;
-                    return;
-                }
-                if (e.key === 'AudioVolumeDown') {
-                    let vol = this.audio.volume - 0.1;
-                    if(vol < 0) vol = 0;
-                    this.audio.volume = vol;
-                    document.getElementById('volumeSlider').value = vol;
-                    return;
-                }
+                
+                // Jika Space ditekan pada elemen yang bukan form/button (contoh di body)
                 if (e.code === 'Space') {
                     if (['BUTTON', 'A'].includes(activeTag) || (document.activeElement.hasAttribute('role') && document.activeElement.getAttribute('role') === 'button')) return; 
                     e.preventDefault();
@@ -667,7 +679,7 @@
             wakeLock: null,
             idleTimer: null,
             init() {
-                // Digital clock untuk screensaver (Update per detik)
+                // Digital clock update
                 setInterval(() => {
                     if (this.isActive) {
                         const now = new Intl.DateTimeFormat('id-ID', { timeZone: 'Asia/Jakarta', hour: '2-digit', minute: '2-digit', hour12: false }).format(new Date());
@@ -675,7 +687,7 @@
                     }
                 }, 1000);
 
-                // Idle timeout (5 menit diam = nyalakan screensaver, opsional tapi cocok untuk TV)
+                // Idle timeout (5 menit diam = nyalakan screensaver untuk TV)
                 this.resetIdleTimer();
                 document.addEventListener('mousemove', () => this.resetIdleTimer());
                 document.addEventListener('keydown', () => this.resetIdleTimer());
@@ -702,7 +714,7 @@
                     if ('wakeLock' in navigator) {
                         this.wakeLock = await navigator.wakeLock.request('screen');
                     }
-                } catch (err) { console.log('WakeLock not supported/denied'); }
+                } catch (err) { console.log('WakeLock not supported'); }
 
                 // Update UI Screensaver
                 const station = app.state.currentStation;
@@ -738,7 +750,6 @@
                 this.resize();
                 window.addEventListener('resize', () => this.resize());
                 
-                // Init Sakura untuk Zen Mode secara terpisah
                 const ssCanvas = document.getElementById('screensaverSakura');
                 if(ssCanvas) {
                     this.ssCtx = ssCanvas.getContext('2d');
@@ -765,7 +776,7 @@
                     speedX: Math.random() * 2 - 1,
                     angle: Math.random() * 360,
                     spin: Math.random() * 0.1 - 0.05,
-                    color: `rgba(239, 83, 80, ${Math.random() * 0.5 + 0.2})` // Red/Pink sakura
+                    color: `rgba(239, 83, 80, ${Math.random() * 0.5 + 0.2})` 
                 };
             },
             animate() {
@@ -774,7 +785,7 @@
 
                 this.petals.forEach(p => {
                     p.y += p.speedY;
-                    p.x += Math.sin(p.angle) * 1 + p.speedX; // Gerakan melambai angin
+                    p.x += Math.sin(p.angle) * 1 + p.speedX; 
                     p.angle += p.spin;
 
                     if (p.y > this.canvas.height) {
@@ -789,7 +800,6 @@
                         targetCtx.rotate(p.angle);
                         targetCtx.fillStyle = p.color;
                         targetCtx.beginPath();
-                        // Gambar kelopak sederhana
                         targetCtx.ellipse(0, 0, p.size, p.size * 1.5, 0, 0, Math.PI * 2);
                         targetCtx.fill();
                         targetCtx.restore();
@@ -1064,7 +1074,6 @@
                 const btn = document.getElementById('themeToggle');
                 const icon = document.getElementById('themeIcon');
                 
-                // Tema Default selalu Dark kecuali dipaksa Light via LocalStorage
                 let isDark = localStorage.getItem('ianvex_theme') ? localStorage.getItem('ianvex_theme') === 'dark' : true;
                 
                 const applyTheme = (dark) => {
@@ -1109,7 +1118,6 @@
                 else if (app.state.activeTab === 'favorites') sourceData = app.state.favorites;
                 else if (app.state.activeTab === 'custom') sourceData = app.state.customs;
 
-                // Client Side Filter (Khusus Tab Non-Explore)
                 if (app.state.activeTab !== 'explore') {
                     const q = app.state.searchQuery, g = app.state.activeGenre.toLowerCase(), p = app.state.activeProvince.toLowerCase();
                     sourceData = sourceData.filter(s => 
@@ -1134,7 +1142,8 @@
                     const strData = encodeURIComponent(JSON.stringify(station));
                     
                     const card = document.createElement('div');
-                    card.setAttribute('tabindex', '0'); card.setAttribute('role', 'button');
+                    card.setAttribute('tabindex', '0'); 
+                    card.setAttribute('role', 'button');
                     
                     if (mode === 'list') {
                         card.className = `station-card flex items-center p-3 md:p-4 rounded-2xl border-2 ${isPlaying ? 'border-brand-500 shadow-md' : 'border-gray-200 dark:border-gray-800'}`;
@@ -1149,8 +1158,8 @@
                             </div>
                             <div class="ml-2 flex items-center gap-1 md:gap-2 flex-shrink-0">
                                 ${station.isCustom 
-                                    ? `<button onclick="app.deleteCustomStation(event, '${station.id}')" class="p-2.5 text-gray-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-full transition"><i class="fa-solid fa-trash"></i></button>`
-                                    : `<button onclick="app.toggleFavorite(event, '${strData}')" class="p-2.5 rounded-full fav-btn" data-id="${station.id}">
+                                    ? `<button tabindex="-1" onclick="app.deleteCustomStation(event, '${station.id}')" class="p-2.5 text-gray-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-full transition"><i class="fa-solid fa-trash"></i></button>`
+                                    : `<button tabindex="-1" onclick="app.toggleFavorite(event, '${strData}')" class="p-2.5 rounded-full fav-btn" data-id="${station.id}">
                                         <i class="${isFav ? 'fa-solid' : 'fa-regular'} fa-heart ${isFav ? 'text-brand-500 drop-shadow-sm' : 'text-gray-400'} text-xl transition-all transform hover:scale-110"></i>
                                        </button>`
                                 }
@@ -1167,10 +1176,10 @@
                                     <i class="${isPlaying ? 'fa-solid fa-volume-high animate-pulse text-brand-400' : 'fa-solid fa-play text-white'} ${isDense ? 'text-2xl' : 'text-5xl'} drop-shadow-lg"></i>
                                 </div>
                                 ${!station.isCustom ? 
-                                `<button onclick="app.toggleFavorite(event, '${strData}')" class="absolute top-2 right-2 p-2 bg-white/90 dark:bg-black/70 backdrop-blur rounded-full fav-btn shadow-sm" data-id="${station.id}">
+                                `<button tabindex="-1" onclick="app.toggleFavorite(event, '${strData}')" class="absolute top-2 right-2 p-2 bg-white/90 dark:bg-black/70 backdrop-blur rounded-full fav-btn shadow-sm" data-id="${station.id}">
                                     <i class="${isFav ? 'fa-solid' : 'fa-regular'} fa-heart ${isFav ? 'text-brand-500' : 'text-gray-500'} ${isDense ? 'text-[10px]' : 'text-sm'}"></i>
                                 </button>` : 
-                                `<button onclick="app.deleteCustomStation(event, '${station.id}')" class="absolute top-2 right-2 p-2 bg-white/90 dark:bg-black/70 backdrop-blur rounded-full shadow-sm text-gray-500 hover:text-red-500">
+                                `<button tabindex="-1" onclick="app.deleteCustomStation(event, '${station.id}')" class="absolute top-2 right-2 p-2 bg-white/90 dark:bg-black/70 backdrop-blur rounded-full shadow-sm text-gray-500 hover:text-red-500">
                                     <i class="fa-solid fa-trash ${isDense ? 'text-[10px]' : 'text-sm'}"></i>
                                 </button>`}
                             </div>
@@ -1188,6 +1197,7 @@
             },
 
             updateFavoriteIcons() {
+                // Update grid icon (hanya dipanggil setelah list di render ulang via tab, tidak masalah)
                 document.querySelectorAll('.fav-btn').forEach(btn => {
                     const id = btn.dataset.id;
                     const isFav = app.state.favorites.some(f => f.id === id);
@@ -1195,6 +1205,13 @@
                     if (isFav) icon.className = 'fa-solid fa-heart text-brand-500 ' + (app.state.viewMode==='list' ? 'text-xl' : 'text-sm');
                     else icon.className = 'fa-regular fa-heart ' + (app.state.viewMode==='list' ? 'text-gray-400 text-xl' : 'text-gray-500 text-sm');
                 });
+
+                // Update Player Bar icon
+                const favIconPlayer = document.getElementById('favIconPlayer');
+                if (favIconPlayer && app.state.currentStation) {
+                    const isFav = app.state.favorites.some(f => f.id === app.state.currentStation.id);
+                    favIconPlayer.className = isFav ? 'fa-solid fa-heart text-brand-500 text-xl' : 'fa-regular fa-heart text-xl';
+                }
             },
 
             updatePlayerInfo(station) {
@@ -1209,6 +1226,23 @@
                 const btn = document.getElementById('btnPlayPause');
                 btn.disabled = false;
                 
+                // Aktifkan Tombol Aksi di Player Bar (Favorit/Hapus)
+                const btnFavPlayer = document.getElementById('btnFavPlayer');
+                const btnDeletePlayer = document.getElementById('btnDeletePlayer');
+                
+                if (station.isCustom) {
+                    btnFavPlayer.classList.add('hidden');
+                    btnDeletePlayer.classList.remove('hidden');
+                    btnDeletePlayer.classList.add('flex');
+                } else {
+                    btnDeletePlayer.classList.add('hidden');
+                    btnDeletePlayer.classList.remove('flex');
+                    btnFavPlayer.classList.remove('hidden', 'opacity-50', 'pointer-events-none');
+                    const favIconPlayer = document.getElementById('favIconPlayer');
+                    const isFav = app.state.favorites.some(f => f.id === station.id);
+                    if(favIconPlayer) favIconPlayer.className = isFav ? 'fa-solid fa-heart text-brand-500 text-xl' : 'fa-regular fa-heart text-xl';
+                }
+
                 // Zen Mode update if active
                 if(screensaver.isActive) {
                     document.getElementById('ssTitle').innerText = station.name;
@@ -1242,7 +1276,7 @@
                 const container = document.getElementById('toastContainer');
                 const toast = document.createElement('div');
                 let bgClass = 'bg-gray-900 text-white border border-gray-700';
-                if(type === 'success') bgClass = 'bg-brand-600 text-white border border-brand-500'; // Success as brand color
+                if(type === 'success') bgClass = 'bg-brand-600 text-white border border-brand-500';
                 if(type === 'error') bgClass = 'bg-orange-600 text-white border border-orange-500';
                 
                 toast.className = `px-5 py-3 rounded-xl shadow-2xl text-sm md:text-base font-bold ${bgClass} toast-enter pointer-events-auto flex items-center gap-2`;
