@@ -81,6 +81,12 @@
             50% { transform: translate(10vw, 5vh); }
             100% { transform: translate(-5vw, 15vh); }
         }
+
+        /* Memperbaiki Dropdown Option agar berwarna gelap */
+        select option {
+            background-color: #18181b;
+            color: #f4f4f5;
+        }
     </style>
 </head>
 <body class="min-h-screen flex flex-col pb-32">
@@ -124,13 +130,13 @@
             </div>
             
             <select id="regionFilter" tabindex="0" class="focusable w-48 px-4 py-3 rounded-xl border border-gray-700 bg-dark-800 focus:outline-none text-white transition text-sm font-medium">
-                <option value="">Semua Wilayah</option>
-                <option value="jakarta">DKI Jakarta</option>
-                <option value="jawa barat">Jawa Barat</option>
-                <option value="jawa tengah">Jawa Tengah</option>
-                <option value="jawa timur">Jawa Timur</option>
-                <option value="yogyakarta">DIY Yogyakarta</option>
-                <option value="bali">Bali</option>
+                <option value="" class="bg-dark-800 text-gray-200">Semua Wilayah</option>
+                <option value="jakarta" class="bg-dark-800 text-gray-200">DKI Jakarta</option>
+                <option value="jawa barat" class="bg-dark-800 text-gray-200">Jawa Barat</option>
+                <option value="jawa tengah" class="bg-dark-800 text-gray-200">Jawa Tengah</option>
+                <option value="jawa timur" class="bg-dark-800 text-gray-200">Jawa Timur</option>
+                <option value="yogyakarta" class="bg-dark-800 text-gray-200">DIY Yogyakarta</option>
+                <option value="bali" class="bg-dark-800 text-gray-200">Bali</option>
             </select>
         </div>
 
