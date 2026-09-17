@@ -27,7 +27,7 @@
         body { font-family: 'Inter', sans-serif; background-color: #09090b; color: #f4f4f5; overflow-x: hidden; }
         ::-webkit-scrollbar { display: none; }
         
-        /* TV Navigation Focus - VERY IMPORTANT FOR D-PAD */
+        /* Fokus Navigasi D-Pad TV (Anti Glitch) */
         .focusable { transition: all 0.2s ease; outline: none; border: 1px solid transparent; cursor: pointer; }
         .focusable:focus, .focusable:hover {
             box-shadow: 0 0 0 3px #dc2626, 0 10px 15px -3px rgba(220, 38, 38, 0.3);
@@ -42,20 +42,33 @@
             border-top: 1px solid rgba(63, 63, 70, 0.6);
         }
 
-        /* Dynamic Audio Visualizer CSS Murni (Bebas Lag TV) */
-        .playing-bars { display: flex; gap: 3px; height: 18px; align-items: flex-end; }
-        .bar { width: 4px; background-color: #ef4444; border-radius: 2px; transform-origin: bottom; animation: eq 1s ease-in-out infinite alternate; }
-        .bar:nth-child(2) { animation-delay: 0.2s; animation-duration: 0.8s; }
-        .bar:nth-child(3) { animation-delay: 0.4s; animation-duration: 1.2s; }
-        .bar:nth-child(4) { animation-delay: 0.1s; animation-duration: 0.9s; }
-        @keyframes eq { 0% { transform: scaleY(0.2); } 100% { transform: scaleY(1); } }
+        /* Audio Visualizer CSS Murni */
+        .playing-bars { display: flex; gap: 4px; height: 24px; align-items: flex-end; }
+        .bar { width: 5px; height: 5px; background-color: #ef4444; border-radius: 3px; transition: height 0.2s ease; }
         
+        /* Animasi aktif saat class .is-playing ditambahkan */
+        .is-playing .bar { animation: eq 0.8s ease-in-out infinite alternate; }
+        .is-playing .bar:nth-child(1) { animation-delay: 0.0s; animation-duration: 0.5s; }
+        .is-playing .bar:nth-child(2) { animation-delay: 0.2s; animation-duration: 0.7s; }
+        .is-playing .bar:nth-child(3) { animation-delay: 0.4s; animation-duration: 0.6s; }
+        .is-playing .bar:nth-child(4) { animation-delay: 0.1s; animation-duration: 0.8s; }
+        .is-playing .bar:nth-child(5) { animation-delay: 0.3s; animation-duration: 0.5s; }
+        
+        @keyframes eq { 0% { height: 5px; } 100% { height: 24px; } }
+        
+        /* Zen Mode (Screensaver) Visualizer Raksasa */
+        .zen-visualizer { height: 60px; gap: 8px; }
+        .zen-visualizer .bar { width: 10px; height: 10px; border-radius: 5px; background: linear-gradient(to top, #b91c1c, #ef4444); }
+        @keyframes eq-zen { 0% { height: 10px; } 100% { height: 60px; } }
+        .zen-visualizer.is-playing .bar { animation-name: eq-zen; }
+        
+        /* Animasi Notifikasi */
         @keyframes slideUp { from { transform: translateY(100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
         .toast-enter { animation: slideUp 0.3s ease forwards; }
 
         #sakuraCanvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: -1; opacity: 0.3; }
 
-        /* Smooth CSS Screensaver (Zen Mode) */
+        /* Screensaver (Zen Mode) Layout */
         #zenMode {
             position: fixed; inset: 0; background: #000; z-index: 9999; display: flex; flex-direction: column;
             align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.5s ease;
@@ -72,9 +85,9 @@
 </head>
 <body class="min-h-screen flex flex-col pb-32">
 
+    <!-- Background Animasi Sakura -->
     <canvas id="sakuraCanvas"></canvas>
 
-    <!-- HEADER -->
     <header class="sticky top-0 z-40 glass-panel shadow-sm px-6 py-4 flex items-center justify-between">
         <div class="flex items-center gap-3 text-2xl font-bold text-brand-500 tracking-wide">
             <i class="fa-solid fa-torii-gate"></i>
@@ -85,7 +98,6 @@
 
     <main class="flex-grow container mx-auto px-6 py-6 max-w-7xl">
         
-        <!-- TABS PUSAT DENGAN IKON SERAGAM -->
         <div class="grid grid-cols-5 gap-3 bg-dark-800 p-1.5 rounded-xl w-full text-center mb-8 border border-gray-800">
             <button onclick="app.switchTab('explore')" id="tab-explore" class="focusable tab-btn px-2 py-3 rounded-lg text-sm font-bold bg-dark-900 border border-brand-500 shadow-[0_0_10px_rgba(220,38,38,0.2)] text-brand-500 transition flex items-center justify-center gap-2">
                 <i class="fa-solid fa-compass text-brand-500"></i> <span>Jelajah</span>
@@ -108,7 +120,7 @@
         <div id="searchFilterBar" class="flex gap-4 w-full items-center mb-6">
             <div class="relative flex-1">
                 <i class="fa-solid fa-search absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-500"></i>
-                <input type="text" id="searchInput" tabindex="0" placeholder="Cari stasiun radio..." class="focusable w-full pl-11 pr-4 py-3 rounded-xl border border-gray-700 bg-dark-800 focus:outline-none text-white transition text-sm">
+                <input type="text" id="searchInput" tabindex="0" placeholder="Cari stasiun radio (misal: POP FM)..." class="focusable w-full pl-11 pr-4 py-3 rounded-xl border border-gray-700 bg-dark-800 focus:outline-none text-white transition text-sm">
             </div>
             
             <select id="regionFilter" tabindex="0" class="focusable w-48 px-4 py-3 rounded-xl border border-gray-700 bg-dark-800 focus:outline-none text-white transition text-sm font-medium">
@@ -122,7 +134,7 @@
             </select>
         </div>
 
-        <!-- AREA AL-QURAN & DOA -->
+        <!-- AREA AL-QURAN -->
         <div id="quranSection" class="hidden">
             <div class="grid grid-cols-3 gap-3 mb-6">
                 <button onclick="quran.switchSub('surat')" id="qsub-surat" tabindex="0" class="focusable qsub-btn py-3 rounded-xl bg-brand-600 font-bold text-white shadow-lg shadow-brand-500/20">Daftar Surat (1-114)</button>
@@ -144,9 +156,9 @@
                     </div>
                 </div>
                 <div class="space-y-4 text-gray-300 leading-relaxed relative z-10">
-                    <p>Aplikasi streaming hiburan dan religi lengkap yang dirancang khusus untuk ekosistem Smart TV. Dilengkapi dengan navigasi <b>D-Pad 100% kompatibel</b>.</p>
+                    <p>Aplikasi streaming hiburan dan religi lengkap yang dirancang khusus untuk ekosistem Smart TV. Dilengkapi dengan navigasi <b>D-Pad 100% kompatibel</b>, fitur Audio Visualizer, dan Screensaver pencegah burn-in.</p>
                     <div class="mt-8 pt-6 border-t border-gray-700 text-sm flex items-center justify-between">
-                        <span class="text-gray-400">Versi 3.9 (Uniform Tab Icons)</span>
+                        <span class="text-gray-400">Versi 4.0 (Visualizer Edition)</span>
                         <div class="bg-brand-500/10 text-brand-400 px-4 py-2 rounded-lg font-mono font-bold border border-brand-500/20">Created by: Ilman Nafi'an</div>
                     </div>
                 </div>
@@ -163,7 +175,7 @@
             <button onclick="app.addCustomStation()" tabindex="0" class="focusable mt-4 px-8 py-3 bg-brand-600 hover:bg-brand-500 text-white font-bold rounded-xl transition shadow-lg">Simpan & Tambahkan</button>
         </div>
 
-        <!-- LOADING & EMPTY -->
+        <!-- LOADING & EMPTY STATES -->
         <div id="loadingIndicator" class="flex flex-col items-center justify-center py-20 text-brand-500">
             <i class="fa-solid fa-circle-notch fa-spin text-5xl mb-4"></i>
             <p class="text-gray-400 font-medium tracking-wide">Menghubungkan ke server...</p>
@@ -175,7 +187,6 @@
         </div>
     </main>
 
-    <!-- PLAYER BAR BAWAH -->
     <div class="fixed bottom-0 left-0 right-0 glass-panel z-50 border-t border-gray-700 shadow-[0_-10px_30px_rgba(0,0,0,0.5)]">
         <div class="w-full max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
             <div class="flex items-center space-x-4 flex-1 min-w-0 pr-4">
@@ -189,18 +200,23 @@
             </div>
 
             <div class="flex flex-row items-center space-x-4 flex-shrink-0">
-                <div id="playingAnimation" class="playing-bars hidden mr-2">
-                    <div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
+                
+                <!-- AUDIO VISUALIZER DI PLAYER BAR (Selalu Tampil) -->
+                <div id="playingAnimation" class="playing-bars mr-3">
+                    <div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
                 </div>
                 
-                <button id="btnPlayerFav" tabindex="0" class="focusable w-12 h-12 rounded-full bg-dark-800 border border-gray-700 flex items-center justify-center text-gray-400 hover:text-white transition" onclick="app.toggleCurrentFavorite()">
+                <!-- Tombol Favorit -->
+                <button id="btnPlayerFav" tabindex="0" class="focusable w-12 h-12 rounded-full bg-dark-800 border border-gray-700 flex items-center justify-center text-gray-400 hover:text-white transition" onclick="app.toggleCurrentFavorite()" title="Favorit">
                     <i id="playerFavIcon" class="fa-regular fa-heart text-xl"></i>
                 </button>
 
-                <button tabindex="0" class="focusable w-12 h-12 rounded-full bg-dark-800 border border-gray-700 flex items-center justify-center text-gray-400 hover:text-white transition" onclick="zen.toggle()" title="Screensaver TV">
-                    <i class="fa-solid fa-moon text-xl"></i>
+                <!-- TOMBOL SCREENSAVER / ZEN MODE (Ikon TV) -->
+                <button tabindex="0" class="focusable w-12 h-12 rounded-full bg-dark-800 border border-gray-700 flex items-center justify-center text-gray-400 hover:text-white transition" onclick="zen.toggle()" title="Nyalakan Screensaver">
+                    <i class="fa-solid fa-tv text-xl"></i>
                 </button>
 
+                <!-- Tombol Play/Pause -->
                 <button id="btnPlayPause" tabindex="0" class="focusable w-14 h-14 flex items-center justify-center bg-brand-600 text-white rounded-full shadow-[0_0_15px_rgba(220,38,38,0.4)] transition opacity-50 cursor-not-allowed" disabled onclick="app.togglePlay()">
                     <i id="playIcon" class="fa-solid fa-play text-xl ml-1"></i>
                 </button>
@@ -208,39 +224,46 @@
         </div>
     </div>
 
-    <!-- SCREENSAVER ZEN MODE -->
     <div id="zenMode">
         <div class="zen-bounce flex flex-col items-center justify-center text-center">
-            <i id="zenIcon" class="fa-solid fa-torii-gate text-brand-500 text-6xl mb-6 opacity-80"></i>
-            <div id="zenClock" class="text-7xl font-mono font-bold text-white tracking-widest mb-4 drop-shadow-[0_0_20px_rgba(255,255,255,0.2)]">00:00</div>
-            <div class="bg-dark-900/60 backdrop-blur px-8 py-4 rounded-3xl border border-gray-800 shadow-2xl inline-flex flex-col items-center">
-                <div class="playing-bars mb-3"><div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div></div>
+            
+            <!-- Jam Digital Raksasa -->
+            <div id="zenClock" class="text-7xl md:text-8xl font-mono font-bold text-white tracking-widest mb-6 drop-shadow-[0_0_20px_rgba(255,255,255,0.2)]">00:00</div>
+            
+            <div class="bg-dark-900/60 backdrop-blur px-10 py-6 rounded-3xl border border-gray-800 shadow-2xl inline-flex flex-col items-center">
+                <!-- AUDIO VISUALIZER BESAR DI ZEN MODE -->
+                <div id="zenVisualizer" class="playing-bars zen-visualizer mb-5">
+                    <div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
+                </div>
+                
                 <h2 id="zenTitle" class="text-2xl font-bold text-white max-w-lg truncate">Judul Audio</h2>
-                <p id="zenSub" class="text-brand-400 text-lg mt-1 font-medium">Playing...</p>
+                <p id="zenSub" class="text-brand-400 text-lg mt-1 font-medium">Jeda (Paused)</p>
             </div>
-            <p class="text-gray-600 mt-10 text-sm"><i class="fa-solid fa-keyboard mr-2"></i>Tekan OK/Panah di remote untuk keluar</p>
+            
+            <p class="text-gray-600 mt-12 text-sm"><i class="fa-solid fa-keyboard mr-2"></i>Tekan OK/Panah di remote TV untuk keluar</p>
         </div>
     </div>
 
     <div id="toastContainer" class="fixed bottom-28 left-1/2 transform -translate-x-1/2 z-[60] flex flex-col gap-2 pointer-events-none"></div>
 
     <script>
+        /** === DATA AL-QURAN & DOA === */
         const quranData = {
             surat: [], 
             juz: Array.from({length: 30}, (_, i) => ({
                 id: `juz_${i+1}`,
                 name: `Juz ${i+1}`,
                 number: i + 1,
-                url: `https://archive.org/download/quran-juz-audio-mp3/Para%20${String(i+1).padStart(2, '0')}.mp3`,
+                url: `https://ia600404.us.archive.org/28/items/Murottal-Juz-1-30/Juz-${String(i+1).padStart(2, '0')}.mp3`,
                 tags: `Murottal Lengkap Juz ke-${i+1}`,
                 type: 'quran'
             })),
             doa: [
                 { id: 'doa_1', name: 'Ruqyah Syariyyah', url: 'https://archive.org/download/RuqyahSyariahMishary/Ruqyah%20Syariah%20-%20Mishary%20Rashid.mp3', tags: 'Penyembuhan & Penjagaan', type: 'doa', icon: 'fa-hands-praying' },
-                { id: 'doa_2', name: 'Dzikir Pagi', url: 'https://archive.org/download/AlMatsuratSugroPagiMishariRashid/Al%20Matsurat%20Sugro%20Pagi%20-%20Mishari%20Rashid.mp3', tags: 'Dzikir Pagi Al-Matsurat', type: 'doa', icon: 'fa-sun' },
-                { id: 'doa_3', name: 'Dzikir Petang', url: 'https://archive.org/download/AlMatsuratSugroPetangMishariRashid/Al%20Matsurat%20Sugro%20Petang%20-%20Mishari%20Rashid.mp3', tags: 'Dzikir Petang Al-Matsurat', type: 'doa', icon: 'fa-moon' },
+                { id: 'doa_2', name: 'Dzikir Pagi (Al-Matsurat)', url: 'https://archive.org/download/AlMatsuratSugroPagiMishariRashid/Al%20Matsurat%20Sugro%20Pagi%20-%20Mishari%20Rashid.mp3', tags: 'Dzikir Pagi Sesuai Sunnah', type: 'doa', icon: 'fa-sun' },
+                { id: 'doa_3', name: 'Dzikir Petang (Al-Matsurat)', url: 'https://archive.org/download/AlMatsuratSugroPetangMishariRashid/Al%20Matsurat%20Sugro%20Petang%20-%20Mishari%20Rashid.mp3', tags: 'Dzikir Petang Sesuai Sunnah', type: 'doa', icon: 'fa-moon' },
                 { id: 'doa_4', name: 'Asmaul Husna', url: 'https://archive.org/download/AsmaulHusna_201605/Asmaul%20Husna.mp3', tags: '99 Nama Allah', type: 'doa', icon: 'fa-star-and-crescent' },
-                { id: 'doa_5', name: 'Takbiran (Gema Takbir)', url: 'https://ia800701.us.archive.org/15/items/GemaTakbirMisharyRashid/Gema%20Takbir%20-%20Mishary%20Rashid.mp3', tags: 'Gema Takbir', type: 'doa', icon: 'fa-mosque' }
+                { id: 'doa_5', name: 'Takbiran Idul Fitri/Adha', url: 'https://ia800701.us.archive.org/15/items/GemaTakbirMisharyRashid/Gema%20Takbir%20-%20Mishary%20Rashid.mp3', tags: 'Gema Takbir', type: 'doa', icon: 'fa-mosque' }
             ]
         };
 
@@ -294,7 +317,6 @@
                             <p class="text-sm text-gray-400 truncate">${item.tags}</p>
                         </div>
                     `;
-                    
                     card.addEventListener('click', () => { app.playStream(item); });
                     container.appendChild(card);
                 });
@@ -342,7 +364,7 @@
                 this.audio.addEventListener('playing', () => ui.updatePlayerState(true));
                 this.audio.addEventListener('pause', () => ui.updatePlayerState(false));
                 this.audio.addEventListener('error', () => {
-                    ui.showToast('Loading lambat / Gagal memutar. Coba lagi.', 'error');
+                    ui.showToast('Gagal memutar audio. Coba stasiun lain.', 'error');
                     ui.updatePlayerState(false);
                 });
             },
@@ -361,11 +383,12 @@
 
             getFallbackRadios() {
                 return [
+                    // POP FM SEMARANG DI KUNCI DI ATAS
                     { id: 'f_popsemarang', name: 'POP FM Semarang', url: 'https://i.klikhost.com:9612/stream.aac', tags: 'Dangdut/Pop • Jawa Tengah', type: 'radio', image: '' },
-                    { id: 'f1', name: 'Prambors FM Jakarta', url: 'https://masima.rastream.com/masima-pramborsjakarta', tags: 'Pop • DKI Jakarta', type: 'radio', image: 'https://www.pramborsfm.com/favicon.ico' },
-                    { id: 'f2', name: 'Radio Rodja', url: 'https://radio.radiorodja.com/', tags: 'Religi • Jawa Barat', type: 'radio', image: 'https://radiorodja.com/favicon.ico' },
-                    { id: 'f3', name: 'Suara Surabaya', url: 'https://stream.suarasurabaya.net:8000/suarasurabaya.mp3', tags: 'Berita • Jawa Timur', type: 'radio', image: 'https://www.suarasurabaya.net/wp-content/uploads/2019/08/cropped-logo-1-32x32.png' },
-                    { id: 'f4', name: 'Gen FM Jakarta', url: 'https://stream.genfm.co.id/genfm', tags: 'Pop • DKI Jakarta', type: 'radio', image: 'https://www.gen987fm.com/favicon.ico' }
+                    { id: 'f1', name: 'Prambors FM Jakarta', url: 'https://masima.rastream.com/masima-pramborsjakarta', tags: 'Pop • DKI Jakarta', type: 'radio', image: '' },
+                    { id: 'f2', name: 'Radio Rodja', url: 'https://radio.radiorodja.com/', tags: 'Religi • Jawa Barat', type: 'radio', image: '' },
+                    { id: 'f3', name: 'Suara Surabaya', url: 'https://stream.suarasurabaya.net:8000/suarasurabaya.mp3', tags: 'Berita • Jawa Timur', type: 'radio', image: '' },
+                    { id: 'f4', name: 'Gen FM Jakarta', url: 'https://stream.genfm.co.id/genfm', tags: 'Pop • DKI Jakarta', type: 'radio', image: '' }
                 ];
             },
 
@@ -376,6 +399,7 @@
                 
                 for (let server of servers) {
                     try {
+                        // Limit diperbesar menjadi 300
                         const res = await fetch(`${server}/json/stations/search?countrycode=ID&limit=300&hidebroken=true&order=clickcount&reverse=true`);
                         if (!res.ok) continue;
                         const data = await res.json();
@@ -393,7 +417,9 @@
                     } catch (err) {}
                 }
 
+                // GABUNGKAN (Merge) Fallback dengan API, sehingga POP FM tidak hilang
                 this.state.stations = [...this.getFallbackRadios(), ...apiStations];
+                
                 ui.showLoading(false);
                 if(this.state.activeTab === 'explore') ui.renderStations();
             },
@@ -410,7 +436,7 @@
                 ui.updateFavoriteButton();
                 const playPromise = this.audio.play();
                 if (playPromise !== undefined) {
-                    playPromise.catch(error => { ui.updatePlayerState(false); ui.showToast('Sedang memuat koneksi audio...', 'error'); });
+                    playPromise.catch(error => { ui.updatePlayerState(false); ui.showToast('Memuat audio...', 'error'); });
                 }
             },
 
@@ -498,9 +524,9 @@
                     
                     let mediaHtml = '';
                     if (station.type === 'quran' || station.type === 'doa') {
-                        let iconClass = station.type === 'quran' ? 'fa-book-quran' : 'fa-hands-praying';
-                        mediaHtml = `<i class="fa-solid ${iconClass} text-4xl group-hover:text-white transition"></i>`;
+                        mediaHtml = `<i class="fa-solid fa-book-quran text-4xl group-hover:text-white transition"></i>`;
                     } else {
+                        // AUTO-GENERATE LOGO UNTUK RADIO YANG TIDAK PUNYA LOGO
                         const initialText = encodeURIComponent(station.name.substring(0, 3).toUpperCase());
                         const fallbackImage = `https://placehold.co/400x400/18181b/dc2626?text=${initialText}`;
                         const imgSrc = station.image || fallbackImage;
@@ -528,9 +554,9 @@
                 document.getElementById('playerSubtitle').innerText = (station.type === 'radio' ? 'Radio Nusantara' : 'Al-Quran / Doa');
                 
                 const iconContainer = document.getElementById('playerIconContainer');
+                
                 if (station.type === 'quran' || station.type === 'doa') {
-                    const iconClass = station.type === 'quran' ? 'fa-book-quran' : 'fa-hands-praying';
-                    iconContainer.innerHTML = `<i class="fa-solid ${iconClass}"></i>`;
+                    iconContainer.innerHTML = `<i class="fa-solid fa-book-quran"></i>`;
                 } else {
                     const initialText = encodeURIComponent(station.name.substring(0, 3).toUpperCase());
                     const fallbackImage = `https://placehold.co/400x400/18181b/dc2626?text=${initialText}`;
@@ -547,18 +573,29 @@
 
             updatePlayerState(isPlaying) {
                 const icon = document.getElementById('playIcon');
+                
+                // Menangani Animasi Visualizer
                 const anim = document.getElementById('playingAnimation');
+                const zenAnim = document.getElementById('zenVisualizer');
 
                 if (isPlaying) {
                     icon.classList.replace('fa-play', 'fa-pause');
                     icon.classList.remove('ml-1'); 
-                    anim.classList.remove('hidden');
+                    
+                    // Tambahkan class is-playing agar balok visualizer bergoyang
+                    anim.classList.add('is-playing');
+                    if(zenAnim) zenAnim.classList.add('is-playing');
+                    
                     document.getElementById('zenSub').innerText = "Sedang Diputar";
                     document.getElementById('zenSub').classList.add('animate-pulse');
                 } else {
                     icon.classList.replace('fa-pause', 'fa-play');
                     icon.classList.add('ml-1');
-                    anim.classList.add('hidden');
+                    
+                    // Cabut class is-playing agar balok visualizer diam
+                    anim.classList.remove('is-playing');
+                    if(zenAnim) zenAnim.classList.remove('is-playing');
+                    
                     document.getElementById('zenSub').innerText = "Jeda (Paused)";
                     document.getElementById('zenSub').classList.remove('animate-pulse');
                 }
@@ -595,7 +632,19 @@
                     el.classList.add('active');
                     const current = app.state.currentStation;
                     document.getElementById('zenTitle').innerText = current ? current.name : 'IANVEX TV';
-                    document.getElementById('zenIcon').className = current?.type === 'quran' ? 'fa-solid fa-book-quran text-brand-500 text-6xl mb-6 opacity-80' : 'fa-solid fa-torii-gate text-brand-500 text-6xl mb-6 opacity-80';
+                    
+                    // Sesuaikan status visualizer Screensaver
+                    const zenAnim = document.getElementById('zenVisualizer');
+                    if (!app.audio.paused) {
+                        zenAnim.classList.add('is-playing');
+                        document.getElementById('zenSub').innerText = "Sedang Diputar";
+                        document.getElementById('zenSub').classList.add('animate-pulse');
+                    } else {
+                        zenAnim.classList.remove('is-playing');
+                        document.getElementById('zenSub').innerText = "Jeda (Paused)";
+                        document.getElementById('zenSub').classList.remove('animate-pulse');
+                    }
+
                     this.startClock();
                 } else {
                     el.classList.remove('active'); clearInterval(this.interval);
